@@ -491,7 +491,6 @@
   </div>
   <div class="fbottom">
     <span>© 2026 Pazarım. <span id="t-rights"></span></span>
-    <span class="admin-footer-link" id="adminFooterLink" id="t-adminLinkFooter"></span>
     <div class="foot-logo"><i data-lucide="shield-check" style="width:15px;height:15px"></i> <span id="t-securePayment2"></span></div>
   </div>
 </footer>
@@ -1142,7 +1141,6 @@ function renderStaticText(){
   document.getElementById("continueBtn").textContent = tr("continueShopping");
   document.getElementById("checkoutBtn").textContent = tr("checkout");
   document.getElementById("shippingLabel").textContent = tr("shipping");
-  document.getElementById("adminFooterLink").textContent = tr("adminLinkFooter");
   document.querySelectorAll(".lang-item").forEach(item=>{ item.classList.toggle("active", item.dataset.lang === lang); });
   document.documentElement.lang = lang;
 
@@ -1185,11 +1183,6 @@ function renderAccountArea(){
   favBadge.textContent = favCount;
   favBadge.style.display = favCount > 0 ? "flex" : "none";
   document.getElementById("favOpenBtn").onclick = () => { currentView = "favorites"; query=""; renderAll(); window.scrollTo({top:0,behavior:"smooth"}); };
-
-  document.getElementById("adminFooterLink").onclick = () => {
-    if(isAdminLoggedIn){ currentView = "admin"; adminTab="dashboard"; renderAll(); window.scrollTo({top:0,behavior:"smooth"}); }
-    else { openAdminLoginModal(); }
-  };
 
   document.getElementById("t-help").onclick = openSupportModal;
   const sideHelpEl = document.getElementById("sideHelpItem");
@@ -1403,6 +1396,17 @@ document.getElementById("ownerLoginForm").addEventListener("submit",(e)=>{
     errEl.textContent = tr("ownerInvalidCred"); errEl.classList.add("show");
   }
 });
+document.addEventListener("keydown",(e)=>{
+  if(e.altKey && e.shiftKey && (e.key === "A" || e.key === "a")){
+    e.preventDefault();
+    if(isAdminLoggedIn){ currentView = "admin"; adminTab="dashboard"; renderAll(); window.scrollTo({top:0,behavior:"smooth"}); }
+    else { openAdminLoginModal(); }
+  }
+});
+if(window.location.hash === "#admin-panel" && !isAdminLoggedIn){
+  openAdminLoginModal();
+}
+
 document.addEventListener("keydown",(e)=>{
   if(e.altKey && e.shiftKey && (e.key === "P" || e.key === "p")){
     e.preventDefault();
