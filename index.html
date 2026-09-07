@@ -238,6 +238,14 @@
   .checkout-summary h3{font-size:15px;font-weight:800;margin:0 0 14px;}
   .summary-item{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:6px;color:var(--muted);}
   .summary-total{border-top:1px solid var(--border);margin-top:10px;padding-top:10px;font-weight:800;font-size:15px;color:var(--navy);display:flex;justify-content:space-between;}
+  .coupon-row{display:flex;gap:8px;margin:10px 0;}
+  .coupon-row input{flex:1;border:1.5px solid var(--border);border-radius:8px;padding:9px 11px;font-size:13px;outline:none;background:var(--surface);color:var(--text);}
+  .coupon-row button{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:9px 14px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;}
+  .coupon-applied{display:flex;align-items:center;gap:8px;background:#E7F3EE;color:var(--green);border-radius:8px;padding:9px 12px;font-size:12.5px;font-weight:700;width:100%;}
+  .coupon-applied button{margin-left:auto;background:none;border:none;color:var(--red);font-weight:700;cursor:pointer;font-size:12px;}
+  .stock-note{font-size:11.5px;font-weight:700;margin-bottom:8px;}
+  .stock-note.low{color:var(--amber-dark);}
+  .stock-note.out{color:var(--red);}
   .summary-row{display:flex;justify-content:space-between;font-size:13px;margin:4px 0;color:#3A4B5C;}
   .radio-option{display:flex;align-items:center;gap:12px;border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;cursor:pointer;}
   .radio-option.selected{border-color:var(--amber);background:#FFF8ED;}
@@ -391,7 +399,7 @@
     <span class="topbar-left"><i data-lucide="truck" style="width:14px;height:14px"></i> <span id="t-freeShipBar"></span></span>
     <div class="topbar-right">
       <span id="t-stores"></span>
-      <span id="t-help"></span>
+      <span id="t-help" style="cursor:pointer;"></span>
       <button class="lang-btn" id="themeToggleBtn" style="padding:4px 9px;"><i data-lucide="moon" id="themeIcon" style="width:13px;height:13px"></i></button>
       <div class="lang">
         <button class="lang-btn" id="langBtn"><i data-lucide="globe" style="width:13px;height:13px"></i> <span id="langFlag"></span> <span id="langCode"></span> <i data-lucide="chevron-down" style="width:12px;height:12px"></i></button>
@@ -503,7 +511,7 @@
     <div class="side-item" id="sideAccountItem"><span class="emoji"><i data-lucide="user" style="width:18px;height:18px"></i></span><span id="t-account3"></span></div>
     <div class="side-item" id="sideFavItem"><span class="emoji"><i data-lucide="heart" style="width:18px;height:18px"></i></span><span id="t-list2"></span></div>
     <div class="side-item" id="sideOrdersItem"><span class="emoji"><i data-lucide="package" style="width:18px;height:18px"></i></span><span id="t-trackOrder2"></span></div>
-    <div class="side-item"><span class="emoji"><i data-lucide="help-circle" style="width:18px;height:18px"></i></span><span id="t-help2"></span></div>
+    <div class="side-item" id="sideHelpItem"><span class="emoji"><i data-lucide="help-circle" style="width:18px;height:18px"></i></span><span id="t-help2"></span></div>
   </div>
 </div>
 
@@ -582,6 +590,24 @@
   </div>
 </div>
 
+<div class="modal" id="supportModal">
+  <div class="modal-head">
+    <div class="modal-head-row">
+      <h2 id="t-supportModalTitle"></h2>
+      <button class="modal-close" id="closeSupportModal"><i data-lucide="x" style="width:16px;height:16px"></i></button>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="form-success" id="supportSuccess"></div>
+    <div class="form-error" id="supportError"></div>
+    <form id="supportForm">
+      <div class="field"><label id="t-supportEmailLbl"></label><input type="email" id="supportEmail" autocomplete="email"></div>
+      <div class="field"><label id="t-supportMessageLbl"></label><textarea id="supportMessage" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;font-size:14px;outline:none;min-height:110px;resize:vertical;background:var(--surface);color:var(--text);"></textarea></div>
+      <button type="submit" class="submit-btn" id="t-supportSubmitBtn"></button>
+    </form>
+  </div>
+</div>
+
 <div class="modal" id="adminLoginModal">
   <div class="modal-head">
     <div class="modal-head-row">
@@ -596,6 +622,24 @@
       <div class="field"><label id="t-adminPasswordLbl"></label><input type="password" id="adminPasswordInput" autocomplete="current-password"></div>
       <div class="field-hint" id="t-adminDemoHint" style="margin-bottom:10px;"></div>
       <button type="submit" class="submit-btn" id="t-adminLoginBtn"></button>
+    </form>
+  </div>
+</div>
+
+<div class="modal" id="ownerLoginModal">
+  <div class="modal-head">
+    <div class="modal-head-row">
+      <h2 id="t-ownerLoginTitle"></h2>
+      <button class="modal-close" id="closeOwnerLoginModal"><i data-lucide="x" style="width:16px;height:16px"></i></button>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="form-error" id="ownerLoginError"></div>
+    <form id="ownerLoginForm">
+      <div class="field"><label id="t-adminEmailLbl2"></label><input type="email" id="ownerEmailInput" autocomplete="username"></div>
+      <div class="field"><label id="t-adminPasswordLbl2"></label><input type="password" id="ownerPasswordInput" autocomplete="current-password"></div>
+      <div class="field-hint" id="t-ownerDemoHint" style="margin-bottom:10px;"></div>
+      <button type="submit" class="submit-btn" id="t-ownerLoginBtn"></button>
     </form>
   </div>
 </div>
@@ -672,6 +716,26 @@ const LANGS = {
     toastAddedToCart:"Sepete eklendi", toastFavAdded:"Favorilere eklendi", toastFavRemoved:"Favorilerden çıkarıldı",
     toastReviewAdded:"Yorumunuz eklendi", toastSubscribed:"Abone oldunuz, teşekkürler!",
     deleteUserConfirm:"Bu üyeyi silmek istediğinize emin misiniz?", deleteBtn:"Sil",
+    supportModalTitle:"Şikayet & Destek", supportEmailLbl:"E-posta adresin", supportMessageLbl:"Şikayetin / mesajın",
+    supportSubmitBtn:"Gönder", supportSuccessMsg:"Mesajınız alındı, en kısa sürede dönüş yapacağız.",
+    toastComplaintSent:"Şikayetiniz iletildi", adminComplaints:"Şikayetler", noComplaints:"Henüz şikayet yok.",
+    complaintEmailCol:"E-posta", complaintMessageCol:"Mesaj", complaintDateCol:"Tarih", complaintStatusCol:"Durum",
+    statusOpen:"Açık", statusResolved:"Çözüldü",
+    outOfStock:"Stokta yok", stockLow:"Son ürünler",
+    couponLbl:"İndirim kodu", couponPlaceholder:"Kupon kodu", applyCoupon:"Uygula", couponInvalid:"Geçersiz kupon kodu.",
+    toastCouponApplied:"Kupon uygulandı",
+    ownerPanel:"Sahip Paneli", ownerLoginTitle:"Sahip Girişi", ownerNameLbl:"Kim giriş yapıyor?",
+    ownerLoginBtn:"Giriş yap", ownerInvalidCred:"E-posta veya şifre hatalı.", ownerDemoHint:"Demo: sahip1@pazarim.com veya sahip2@pazarim.com / sahip123",
+    ownerLogout:"Çıkış yap", ownerWelcome:"Hoş geldin",
+    ownerProducts:"Ürünler", ownerCoupons:"Kupon Kodları", ownerSales:"Satış Grafiği",
+    addProduct:"Yeni Ürün Ekle", editProduct:"Ürünü Düzenle", productNameLbl:"Ürün Adı", categoryLbl:"Kategori",
+    priceLbl:"Fiyat (₺)", stockLbl:"Stok Adedi", iconLbl:"İkon", badgeLbl:"Rozet", noneOption:"Yok",
+    saveProduct:"Kaydet", cancelBtn:"Vazgeç", deleteProduct:"Sil", deleteProductConfirm:"Bu ürünü silmek istediğinize emin misiniz?",
+    productAdded:"Ürün eklendi", productUpdated:"Ürün güncellendi", productDeleted:"Ürün silindi",
+    addCoupon:"Yeni Kupon Ekle", couponCodeLbl:"Kupon Kodu", couponPercentLbl:"İndirim (%)", noCoupons:"Henüz kupon yok.",
+    couponCodeCol:"Kod", couponPercentCol:"İndirim", couponActiveCol:"Aktif", couponDeleteConfirm:"Bu kuponu silmek istediğinize emin misiniz?",
+    last7Days:"Son 7 gün", salesChartTitle:"Günlük Ciro", noSalesData:"Henüz satış verisi yok.",
+    secretHint:"Bu paneli açmak için Ctrl+Shift+O tuşlarına basın.",
   },
   en: { code:"EN", flag:"🇬🇧", name:"English", currency:"$", rate:0.029,
     deliveryLabel:"Delivering to", deliveryValue:"Kadikoy, Istanbul",
@@ -742,6 +806,26 @@ const LANGS = {
     toastAddedToCart:"Added to cart", toastFavAdded:"Added to favorites", toastFavRemoved:"Removed from favorites",
     toastReviewAdded:"Your review was added", toastSubscribed:"Subscribed, thank you!",
     deleteUserConfirm:"Are you sure you want to delete this member?", deleteBtn:"Delete",
+    supportModalTitle:"Support & Complaints", supportEmailLbl:"Your email address", supportMessageLbl:"Your complaint / message",
+    supportSubmitBtn:"Send", supportSuccessMsg:"We've received your message and will get back to you soon.",
+    toastComplaintSent:"Your complaint has been sent", adminComplaints:"Complaints", noComplaints:"No complaints yet.",
+    complaintEmailCol:"Email", complaintMessageCol:"Message", complaintDateCol:"Date", complaintStatusCol:"Status",
+    statusOpen:"Open", statusResolved:"Resolved",
+    outOfStock:"Out of stock", stockLow:"Low stock",
+    couponLbl:"Discount code", couponPlaceholder:"Coupon code", applyCoupon:"Apply", couponInvalid:"Invalid coupon code.",
+    toastCouponApplied:"Coupon applied",
+    ownerPanel:"Owner Panel", ownerLoginTitle:"Owner Login", ownerNameLbl:"Who's logging in?",
+    ownerLoginBtn:"Log in", ownerInvalidCred:"Incorrect email or password.", ownerDemoHint:"Demo: sahip1@pazarim.com or sahip2@pazarim.com / sahip123",
+    ownerLogout:"Log out", ownerWelcome:"Welcome",
+    ownerProducts:"Products", ownerCoupons:"Coupon Codes", ownerSales:"Sales Chart",
+    addProduct:"Add New Product", editProduct:"Edit Product", productNameLbl:"Product Name", categoryLbl:"Category",
+    priceLbl:"Price (₺)", stockLbl:"Stock Quantity", iconLbl:"Icon", badgeLbl:"Badge", noneOption:"None",
+    saveProduct:"Save", cancelBtn:"Cancel", deleteProduct:"Delete", deleteProductConfirm:"Are you sure you want to delete this product?",
+    productAdded:"Product added", productUpdated:"Product updated", productDeleted:"Product deleted",
+    addCoupon:"Add New Coupon", couponCodeLbl:"Coupon Code", couponPercentLbl:"Discount (%)", noCoupons:"No coupons yet.",
+    couponCodeCol:"Code", couponPercentCol:"Discount", couponActiveCol:"Active", couponDeleteConfirm:"Are you sure you want to delete this coupon?",
+    last7Days:"Last 7 days", salesChartTitle:"Daily Revenue", noSalesData:"No sales data yet.",
+    secretHint:"Press Ctrl+Shift+O to open this panel.",
   },
   fr: { code:"FR", flag:"🇫🇷", name:"Français", currency:"€", rate:0.027,
     deliveryLabel:"Livraison à", deliveryValue:"Kadikoy, Istanbul",
@@ -812,6 +896,26 @@ const LANGS = {
     toastAddedToCart:"Ajouté au panier", toastFavAdded:"Ajouté aux favoris", toastFavRemoved:"Retiré des favoris",
     toastReviewAdded:"Votre avis a été ajouté", toastSubscribed:"Abonnement effectué, merci !",
     deleteUserConfirm:"Voulez-vous vraiment supprimer ce membre ?", deleteBtn:"Supprimer",
+    supportModalTitle:"Support & réclamations", supportEmailLbl:"Votre adresse e-mail", supportMessageLbl:"Votre réclamation / message",
+    supportSubmitBtn:"Envoyer", supportSuccessMsg:"Nous avons bien reçu votre message et reviendrons vers vous rapidement.",
+    toastComplaintSent:"Votre réclamation a été envoyée", adminComplaints:"Réclamations", noComplaints:"Aucune réclamation pour le moment.",
+    complaintEmailCol:"E-mail", complaintMessageCol:"Message", complaintDateCol:"Date", complaintStatusCol:"Statut",
+    statusOpen:"Ouverte", statusResolved:"Résolue",
+    outOfStock:"Rupture de stock", stockLow:"Stock limité",
+    couponLbl:"Code promo", couponPlaceholder:"Code promo", applyCoupon:"Appliquer", couponInvalid:"Code promo invalide.",
+    toastCouponApplied:"Code promo appliqué",
+    ownerPanel:"Panneau Propriétaire", ownerLoginTitle:"Connexion Propriétaire", ownerNameLbl:"Qui se connecte ?",
+    ownerLoginBtn:"Se connecter", ownerInvalidCred:"E-mail ou mot de passe incorrect.", ownerDemoHint:"Démo : sahip1@pazarim.com ou sahip2@pazarim.com / sahip123",
+    ownerLogout:"Se déconnecter", ownerWelcome:"Bienvenue",
+    ownerProducts:"Produits", ownerCoupons:"Codes Promo", ownerSales:"Graphique des ventes",
+    addProduct:"Ajouter un produit", editProduct:"Modifier le produit", productNameLbl:"Nom du produit", categoryLbl:"Catégorie",
+    priceLbl:"Prix (₺)", stockLbl:"Quantité en stock", iconLbl:"Icône", badgeLbl:"Badge", noneOption:"Aucun",
+    saveProduct:"Enregistrer", cancelBtn:"Annuler", deleteProduct:"Supprimer", deleteProductConfirm:"Voulez-vous vraiment supprimer ce produit ?",
+    productAdded:"Produit ajouté", productUpdated:"Produit mis à jour", productDeleted:"Produit supprimé",
+    addCoupon:"Ajouter un code promo", couponCodeLbl:"Code promo", couponPercentLbl:"Réduction (%)", noCoupons:"Aucun code promo pour le moment.",
+    couponCodeCol:"Code", couponPercentCol:"Réduction", couponActiveCol:"Actif", couponDeleteConfirm:"Voulez-vous vraiment supprimer ce code promo ?",
+    last7Days:"7 derniers jours", salesChartTitle:"Chiffre d'affaires quotidien", noSalesData:"Aucune donnée de vente pour le moment.",
+    secretHint:"Appuyez sur Ctrl+Shift+O pour ouvrir ce panneau.",
   }
 };
 
@@ -828,57 +932,57 @@ const CATEGORIES = [
 ];
 
 const PRODUCTS = [
-  { id:1, cat:"market", priceTRY:34.9, rating:4.6, reviews:128, badge:"new", color:"#EDE6C8", icon:"carrot",
+  { id:1, cat:"market", priceTRY:34.9, rating:4.6, reviews:128, badge:"new", color:"#EDE6C8", stock:40, icon:"carrot",
     name:{tr:"Organik Domates 1kg", en:"Organic Tomatoes 1kg", fr:"Tomates bio 1kg"} },
-  { id:2, cat:"market", priceTRY:22.5, rating:4.4, reviews:76, badge:null, color:"#E9D8B8", icon:"wheat",
+  { id:2, cat:"market", priceTRY:22.5, rating:4.4, reviews:76, badge:null, color:"#E9D8B8", stock:35, icon:"wheat",
     name:{tr:"Tam Buğday Ekmek", en:"Whole Wheat Bread", fr:"Pain complet"} },
-  { id:3, cat:"market", priceTRY:159.9, rating:4.6, reviews:189, badge:null, color:"#DCC9AE", icon:"coffee",
+  { id:3, cat:"market", priceTRY:159.9, rating:4.6, reviews:189, badge:null, color:"#DCC9AE", stock:60, icon:"coffee",
     name:{tr:"Doğal Kahve 500g", en:"Natural Coffee 500g", fr:"Café naturel 500g"} },
-  { id:4, cat:"market", priceTRY:64.9, rating:4.5, reviews:64, badge:"discount", color:"#F0E2CE", icon:"milk",
+  { id:4, cat:"market", priceTRY:64.9, rating:4.5, reviews:64, badge:"discount", color:"#F0E2CE", stock:5, icon:"milk",
     name:{tr:"Kaşar Peyniri 500g", en:"Cheddar Cheese 500g", fr:"Fromage cheddar 500g"} },
-  { id:5, cat:"elektronik", priceTRY:649, rating:4.7, reviews:342, badge:"discount", color:"#DCE4EC", icon:"headphones",
+  { id:5, cat:"elektronik", priceTRY:649, rating:4.7, reviews:342, badge:"discount", color:"#DCE4EC", stock:18, icon:"headphones",
     name:{tr:"Kablosuz Kulaklık", en:"Wireless Headphones", fr:"Écouteurs sans fil"} },
-  { id:6, cat:"elektronik", priceTRY:1299, rating:4.3, reviews:98, badge:"new", color:"#D8E1EA", icon:"watch",
+  { id:6, cat:"elektronik", priceTRY:1299, rating:4.3, reviews:98, badge:"new", color:"#D8E1EA", stock:22, icon:"watch",
     name:{tr:"Akıllı Bileklik", en:"Smart Fitness Band", fr:"Bracelet connecté"} },
-  { id:7, cat:"elektronik", priceTRY:459, rating:4.4, reviews:156, badge:null, color:"#DDE6ED", icon:"zap",
+  { id:7, cat:"elektronik", priceTRY:459, rating:4.4, reviews:156, badge:null, color:"#DDE6ED", stock:50, icon:"zap",
     name:{tr:"Hızlı Şarj Adaptörü", en:"Fast Charger Adapter", fr:"Chargeur rapide"} },
-  { id:8, cat:"elektronik", priceTRY:2899, rating:4.6, reviews:412, badge:"bestSeller", color:"#D5DFE9", icon:"smartphone",
+  { id:8, cat:"elektronik", priceTRY:2899, rating:4.6, reviews:412, badge:"bestSeller", color:"#D5DFE9", stock:9, icon:"smartphone",
     name:{tr:"Akıllı Telefon 128GB", en:"Smartphone 128GB", fr:"Smartphone 128 Go"} },
-  { id:9, cat:"giyim", priceTRY:249.9, rating:4.2, reviews:61, badge:null, color:"#EAE0E6", icon:"shirt",
+  { id:9, cat:"giyim", priceTRY:249.9, rating:4.2, reviews:61, badge:null, color:"#EAE0E6", stock:30, icon:"shirt",
     name:{tr:"Unisex Sweatshirt", en:"Unisex Sweatshirt", fr:"Sweat unisexe"} },
-  { id:10, cat:"giyim", priceTRY:189.9, rating:4.3, reviews:45, badge:"new", color:"#E5DEE8", icon:"shirt",
+  { id:10, cat:"giyim", priceTRY:189.9, rating:4.3, reviews:45, badge:"new", color:"#E5DEE8", stock:0, icon:"shirt",
     name:{tr:"Slim Fit Kot Pantolon", en:"Slim Fit Jeans", fr:"Jean slim"} },
-  { id:11, cat:"giyim", priceTRY:129.9, rating:4.1, reviews:38, badge:null, color:"#EEE3E9", icon:"shopping-bag",
+  { id:11, cat:"giyim", priceTRY:129.9, rating:4.1, reviews:38, badge:null, color:"#EEE3E9", stock:45, icon:"shopping-bag",
     name:{tr:"Spor Şapka", en:"Sports Cap", fr:"Casquette de sport"} },
-  { id:12, cat:"ev", priceTRY:189.9, rating:4.5, reviews:54, badge:null, color:"#E9DACF", icon:"droplet",
+  { id:12, cat:"ev", priceTRY:189.9, rating:4.5, reviews:54, badge:null, color:"#E9DACF", stock:28, icon:"droplet",
     name:{tr:"Pamuklu Havlu Seti", en:"Cotton Towel Set", fr:"Set de serviettes en coton"} },
-  { id:13, cat:"ev", priceTRY:329, rating:4.6, reviews:74, badge:"new", color:"#DAE3E7", icon:"utensils-crossed",
+  { id:13, cat:"ev", priceTRY:329, rating:4.6, reviews:74, badge:"new", color:"#DAE3E7", stock:16, icon:"utensils-crossed",
     name:{tr:"Mutfak Bıçak Seti", en:"Kitchen Knife Set", fr:"Set de couteaux de cuisine"} },
-  { id:14, cat:"ev", priceTRY:899, rating:4.4, reviews:132, badge:"discount", color:"#DEE6E2", icon:"lamp",
+  { id:14, cat:"ev", priceTRY:899, rating:4.4, reviews:132, badge:"discount", color:"#DEE6E2", stock:12, icon:"lamp",
     name:{tr:"Dekoratif Aydınlatma", en:"Decorative Lighting", fr:"Éclairage décoratif"} },
-  { id:15, cat:"bakim", priceTRY:89.9, rating:4.4, reviews:112, badge:null, color:"#E6DCEA", icon:"droplets",
+  { id:15, cat:"bakim", priceTRY:89.9, rating:4.4, reviews:112, badge:null, color:"#E6DCEA", stock:33, icon:"droplets",
     name:{tr:"Nemlendirici Krem", en:"Moisturizing Cream", fr:"Crème hydratante"} },
-  { id:16, cat:"bakim", priceTRY:59.9, rating:4.3, reviews:88, badge:"discount", color:"#EADDE3", icon:"sparkles",
+  { id:16, cat:"bakim", priceTRY:59.9, rating:4.3, reviews:88, badge:"discount", color:"#EADDE3", stock:4, icon:"sparkles",
     name:{tr:"Doğal Sabun Seti", en:"Natural Soap Set", fr:"Set de savons naturels"} },
-  { id:17, cat:"bakim", priceTRY:149.9, rating:4.5, reviews:97, badge:"new", color:"#E3DEE9", icon:"scissors",
+  { id:17, cat:"bakim", priceTRY:149.9, rating:4.5, reviews:97, badge:"new", color:"#E3DEE9", stock:20, icon:"scissors",
     name:{tr:"Saç Bakım Seti", en:"Hair Care Set", fr:"Set de soins capillaires"} },
-  { id:18, cat:"bebek", priceTRY:279, rating:4.8, reviews:210, badge:"bestSeller", color:"#DFEBDF", icon:"baby",
+  { id:18, cat:"bebek", priceTRY:279, rating:4.8, reviews:210, badge:"bestSeller", color:"#DFEBDF", stock:55, icon:"baby",
     name:{tr:"Bebek Bezi Jumbo Paket", en:"Baby Diapers Jumbo Pack", fr:"Couches bébé paquet géant"} },
-  { id:19, cat:"bebek", priceTRY:119.9, rating:4.6, reviews:67, badge:null, color:"#E3EDE3", icon:"cloud",
+  { id:19, cat:"bebek", priceTRY:119.9, rating:4.6, reviews:67, badge:null, color:"#E3EDE3", stock:26, icon:"cloud",
     name:{tr:"Bebek Battaniyesi", en:"Baby Blanket", fr:"Couverture bébé"} },
-  { id:20, cat:"bebek", priceTRY:349, rating:4.7, reviews:91, badge:"new", color:"#DBE7DB", icon:"gift",
+  { id:20, cat:"bebek", priceTRY:349, rating:4.7, reviews:91, badge:"new", color:"#DBE7DB", stock:14, icon:"gift",
     name:{tr:"Bebek Bakım Seti", en:"Baby Care Kit", fr:"Kit de soins bébé"} },
-  { id:21, cat:"spor", priceTRY:449, rating:4.5, reviews:143, badge:"discount", color:"#DCE7DE", icon:"activity",
+  { id:21, cat:"spor", priceTRY:449, rating:4.5, reviews:143, badge:"discount", color:"#DCE7DE", stock:19, icon:"activity",
     name:{tr:"Yoga Matı", en:"Yoga Mat", fr:"Tapis de yoga"} },
-  { id:22, cat:"spor", priceTRY:299, rating:4.4, reviews:58, badge:null, color:"#D9E5DB", icon:"dumbbell",
+  { id:22, cat:"spor", priceTRY:299, rating:4.4, reviews:58, badge:null, color:"#D9E5DB", stock:8, icon:"dumbbell",
     name:{tr:"Ayarlanabilir Dambıl", en:"Adjustable Dumbbell", fr:"Haltère réglable"} },
-  { id:23, cat:"spor", priceTRY:749, rating:4.6, reviews:104, badge:"new", color:"#D6E3D8", icon:"bike",
+  { id:23, cat:"spor", priceTRY:749, rating:4.6, reviews:104, badge:"new", color:"#D6E3D8", stock:24, icon:"bike",
     name:{tr:"Kondisyon Bisikleti Aksesuarı", en:"Cycling Accessory Kit", fr:"Kit accessoires vélo"} },
-  { id:24, cat:"oyuncak", priceTRY:179.9, rating:4.7, reviews:87, badge:"bestSeller", color:"#F2DFC7", icon:"puzzle",
+  { id:24, cat:"oyuncak", priceTRY:179.9, rating:4.7, reviews:87, badge:"bestSeller", color:"#F2DFC7", stock:31, icon:"puzzle",
     name:{tr:"Ahşap Yapboz Seti", en:"Wooden Puzzle Set", fr:"Puzzle en bois"} },
-  { id:25, cat:"oyuncak", priceTRY:229.9, rating:4.5, reviews:63, badge:"new", color:"#F0DBC3", icon:"car",
+  { id:25, cat:"oyuncak", priceTRY:229.9, rating:4.5, reviews:63, badge:"new", color:"#F0DBC3", stock:3, icon:"car",
     name:{tr:"Uzaktan Kumandalı Araba", en:"Remote Control Car", fr:"Voiture télécommandée"} },
-  { id:26, cat:"oyuncak", priceTRY:99.9, rating:4.3, reviews:52, badge:null, color:"#EEDDC8", icon:"dices",
+  { id:26, cat:"oyuncak", priceTRY:99.9, rating:4.3, reviews:52, badge:null, color:"#EEDDC8", stock:42, icon:"dices",
     name:{tr:"Aile Kutu Oyunu", en:"Family Board Game", fr:"Jeu de société familial"} },
 ];
 
@@ -935,6 +1039,18 @@ let lastOrder = null;
 let isAdminLoggedIn = false;
 let adminTab = "dashboard";
 let isDarkMode = false;
+let supportTickets = [];
+let coupons = [ { code:"HOSGELDIN10", percent:10, active:true }, { code:"PAZAR20", percent:20, active:true } ];
+let appliedCoupon = null;
+let couponError = "";
+
+let isOwnerLoggedIn = false;
+let currentOwner = null;
+let ownerTab = "dashboard";
+const OWNER_ACCOUNTS = [
+  { name:"Sahip 1", email:"sahip1@pazarim.com", password:"sahip123" },
+  { name:"Sahip 2", email:"sahip2@pazarim.com", password:"sahip123" },
+];
 
 function formatPrice(priceTRY){
   const l = LANGS[lang];
@@ -1010,6 +1126,8 @@ function renderStaticText(){
     "t-accountSettingsTitle":"accountSettingsTitle", "lblName2":"lblName2", "lblEmail2":"lblEmail2",
     "lblNewPassword":"lblNewPassword", "t-passwordHint":"passwordHint", "t-saveChanges":"saveChanges",
     "t-adminLoginTitle":"adminLoginTitle", "t-adminEmailLbl":"adminEmailLbl", "t-adminPasswordLbl":"adminPasswordLbl",
+    "t-ownerLoginTitle":"ownerLoginTitle", "t-adminEmailLbl2":"adminEmailLbl", "t-adminPasswordLbl2":"adminPasswordLbl",
+    "t-ownerDemoHint":"ownerDemoHint", "t-ownerLoginBtn":"ownerLoginBtn",
     "t-adminLoginBtn":"adminLoginBtn", "t-adminDemoHint":"adminDemoHint",
   };
   for(const [id,key] of Object.entries(map)){
@@ -1072,6 +1190,10 @@ function renderAccountArea(){
     if(isAdminLoggedIn){ currentView = "admin"; adminTab="dashboard"; renderAll(); window.scrollTo({top:0,behavior:"smooth"}); }
     else { openAdminLoginModal(); }
   };
+
+  document.getElementById("t-help").onclick = openSupportModal;
+  const sideHelpEl = document.getElementById("sideHelpItem");
+  if(sideHelpEl) sideHelpEl.onclick = () => { closeSideDrawer(); openSupportModal(); };
 
   if(window.lucide) lucide.createIcons();
 }
@@ -1192,6 +1314,40 @@ document.getElementById("accountForm").addEventListener("submit",(e)=>{
   renderAccountArea();
 });
 
+/* ================= support/complaint modal ================= */
+function openSupportModal(){
+  document.getElementById("supportError").classList.remove("show");
+  document.getElementById("supportSuccess").classList.remove("show");
+  document.getElementById("supportForm").reset();
+  if(currentUser) document.getElementById("supportEmail").value = currentUser.email;
+  document.getElementById("supportModal").classList.add("open");
+  document.getElementById("overlay").classList.add("open");
+}
+function closeSupportModalFn(){
+  document.getElementById("supportModal").classList.remove("open");
+  document.getElementById("overlay").classList.remove("open");
+}
+document.getElementById("closeSupportModal").onclick = closeSupportModalFn;
+document.getElementById("supportForm").addEventListener("submit",(e)=>{
+  e.preventDefault();
+  const email = document.getElementById("supportEmail").value.trim();
+  const message = document.getElementById("supportMessage").value.trim();
+  const errEl = document.getElementById("supportError");
+  const okEl = document.getElementById("supportSuccess");
+  errEl.classList.remove("show"); okEl.classList.remove("show");
+  if(!email || !message){ errEl.textContent = tr("errFillAll"); errEl.classList.add("show"); return; }
+  supportTickets.push({
+    id: "SK" + Date.now().toString().slice(-8),
+    email, message,
+    date: new Date().toISOString(),
+    status: "open",
+  });
+  okEl.textContent = tr("supportSuccessMsg"); okEl.classList.add("show");
+  document.getElementById("supportForm").reset();
+  showToast(tr("toastComplaintSent"), "message-circle");
+  setTimeout(closeSupportModalFn, 1400);
+});
+
 /* ================= admin login modal ================= */
 function openAdminLoginModal(){
   document.getElementById("adminLoginError").classList.remove("show");
@@ -1216,6 +1372,42 @@ document.getElementById("adminLoginForm").addEventListener("submit",(e)=>{
     renderAll(); window.scrollTo({top:0,behavior:"smooth"});
   } else {
     errEl.textContent = tr("adminInvalidCred"); errEl.classList.add("show");
+  }
+});
+
+/* ================= owner (secret) panel login ================= */
+function openOwnerLoginModal(){
+  document.getElementById("ownerLoginError").classList.remove("show");
+  document.getElementById("ownerLoginForm").reset();
+  document.getElementById("ownerLoginModal").classList.add("open");
+  document.getElementById("overlay").classList.add("open");
+}
+function closeOwnerLoginModalFn(){
+  document.getElementById("ownerLoginModal").classList.remove("open");
+  document.getElementById("overlay").classList.remove("open");
+}
+document.getElementById("closeOwnerLoginModal").onclick = closeOwnerLoginModalFn;
+document.getElementById("ownerLoginForm").addEventListener("submit",(e)=>{
+  e.preventDefault();
+  const email = document.getElementById("ownerEmailInput").value.trim().toLowerCase();
+  const password = document.getElementById("ownerPasswordInput").value;
+  const errEl = document.getElementById("ownerLoginError");
+  const match = OWNER_ACCOUNTS.find(o=>o.email===email && o.password===password);
+  if(match){
+    isOwnerLoggedIn = true;
+    currentOwner = match;
+    closeOwnerLoginModalFn();
+    currentView = "owner"; ownerTab = "dashboard";
+    renderAll(); window.scrollTo({top:0,behavior:"smooth"});
+  } else {
+    errEl.textContent = tr("ownerInvalidCred"); errEl.classList.add("show");
+  }
+});
+document.addEventListener("keydown",(e)=>{
+  if(e.ctrlKey && e.shiftKey && (e.key === "O" || e.key === "o")){
+    e.preventDefault();
+    if(isOwnerLoggedIn){ currentView = "owner"; ownerTab = "dashboard"; renderAll(); window.scrollTo({top:0,behavior:"smooth"}); }
+    else { openOwnerLoginModal(); }
   }
 });
 
@@ -1276,6 +1468,8 @@ function productCard(p){
   const qty = cart[p.id] || 0;
   const isFav = !!favorites[p.id];
   const badge = p.badge ? `<span class="badge ${p.badge}">${tr(p.badge)}</span>` : "";
+  const outOfStock = p.stock <= 0;
+  const lowStock = p.stock > 0 && p.stock <= 5;
   return `
     <div class="card">
       ${badge}
@@ -1286,7 +1480,10 @@ function productCard(p){
         <div class="rating"><span class="star">★</span> ${p.rating} (${p.reviews})</div>
       </div>
       <div class="price">${formatPrice(p.priceTRY)}</div>
-      ${qty === 0
+      ${outOfStock ? `<div class="stock-note out">${tr("outOfStock")}</div>` : lowStock ? `<div class="stock-note low">${tr("stockLow")}: ${p.stock}</div>` : ""}
+      ${outOfStock
+        ? `<button class="btn-add" disabled style="opacity:0.5;cursor:not-allowed;">${tr("outOfStock")}</button>`
+        : qty === 0
         ? `<button class="btn-add" data-add="${p.id}">${tr("addToCart")}</button>`
         : `<div class="qty-row">
              <button data-minus="${p.id}"><i data-lucide="minus" style="width:15px;height:15px;color:var(--navy)"></i></button>
@@ -1351,9 +1548,10 @@ function bindFilterBar(){
 /* ================= main router ================= */
 function renderMain(){
   const main = document.getElementById("mainContent");
-  document.body.classList.toggle("admin-mode", currentView === "admin");
+  document.body.classList.toggle("admin-mode", currentView === "admin" || currentView === "owner");
 
   if(currentView === "admin"){ renderAdminPage(main); return; }
+  if(currentView === "owner"){ renderOwnerPage(main); return; }
   if(currentView === "product"){ renderProductPage(main); return; }
   if(currentView === "checkout"){ renderCheckoutPage(main); return; }
   if(currentView === "orders"){ renderOrdersPage(main); return; }
@@ -1545,7 +1743,8 @@ function stepDot(n, label){
 function checkoutSummaryHtml(){
   const entries = Object.entries(cart).filter(([,q])=>q>0);
   const shippingFeeTRY = checkoutData.shipping === "express" ? 39.9 : 0;
-  const total = cartTotalTRY() + shippingFeeTRY;
+  const discountTRY = appliedCoupon ? cartTotalTRY() * (appliedCoupon.percent/100) : 0;
+  const total = cartTotalTRY() + shippingFeeTRY - discountTRY;
   return `
     <div class="checkout-summary">
       <h3>${tr("orderSummary")}</h3>
@@ -1555,9 +1754,32 @@ function checkoutSummaryHtml(){
       }).join("")}
       <div class="summary-row"><span>${tr("subtotal")}</span><span>${formatPrice(cartTotalTRY())}</span></div>
       <div class="summary-row"><span>${tr("shipping")}</span><span>${shippingFeeTRY === 0 ? tr("shippingFree") : formatPrice(shippingFeeTRY)}</span></div>
+      ${appliedCoupon ? `<div class="summary-row" style="color:var(--green);"><span>${tr("couponLbl")} (${appliedCoupon.code})</span><span>-${formatPrice(discountTRY)}</span></div>` : ""}
+      <div class="coupon-row">
+        ${appliedCoupon
+          ? `<div class="coupon-applied"><i data-lucide="tag" style="width:14px;height:14px"></i> ${appliedCoupon.code} (%${appliedCoupon.percent}) <button id="removeCouponBtn">${tr("removeItem")}</button></div>`
+          : `<input type="text" id="couponInput" placeholder="${tr('couponPlaceholder')}"><button id="applyCouponBtn">${tr("applyCoupon")}</button>`
+        }
+      </div>
+      ${couponError ? `<div class="field-hint" style="color:var(--red);margin-top:6px;">${couponError}</div>` : ""}
       <div class="summary-total"><span>${tr("totalLbl")}</span><span>${formatPrice(total)}</span></div>
     </div>
   `;
+}
+function bindCouponControls(){
+  const applyBtn = document.getElementById("applyCouponBtn");
+  const removeBtn = document.getElementById("removeCouponBtn");
+  if(applyBtn){
+    applyBtn.onclick = () => {
+      const code = document.getElementById("couponInput").value.trim().toUpperCase();
+      const found = coupons.find(c=>c.code===code && c.active);
+      if(!found){ couponError = tr("couponInvalid"); renderMain(); return; }
+      appliedCoupon = found; couponError = "";
+      showToast(tr("toastCouponApplied"), "tag");
+      renderMain();
+    };
+  }
+  if(removeBtn){ removeBtn.onclick = () => { appliedCoupon = null; renderMain(); }; }
 }
 function renderCheckoutPage(main){
   if(cartCount() === 0 && checkoutStep < 4){
@@ -1633,6 +1855,7 @@ function renderCheckoutPage(main){
   }
 
   main.innerHTML = `<div class="checkout-wrap"><div>${steps}${panel}</div>${checkoutSummaryHtml()}</div>`;
+  bindCouponControls();
 
   if(checkoutStep === 1){
     document.getElementById("ckNext1").onclick = () => {
@@ -1671,12 +1894,18 @@ function placeOrder(){
     const p = PRODUCTS.find(pr=>pr.id===Number(id));
     return { id:p.id, name:p.name[lang], qty, priceTRY:p.priceTRY };
   });
+  items.forEach(it=>{
+    const p = PRODUCTS.find(pr=>pr.id===it.id);
+    if(p) p.stock = Math.max(0, p.stock - it.qty);
+  });
   const shippingFeeTRY = checkoutData.shipping === "express" ? 39.9 : 0;
+  const discountTRY = appliedCoupon ? cartTotalTRY() * (appliedCoupon.percent/100) : 0;
   const order = {
     id: "PZ" + Date.now().toString().slice(-8),
     date: new Date().toISOString(),
     items,
-    totalTRY: cartTotalTRY() + shippingFeeTRY,
+    totalTRY: cartTotalTRY() + shippingFeeTRY - discountTRY,
+    couponCode: appliedCoupon ? appliedCoupon.code : null,
     status: "preparing",
     userEmail: currentUser.email,
     userName: currentUser.name,
@@ -1684,6 +1913,8 @@ function placeOrder(){
   orders.push(order);
   lastOrder = order;
   cart = {};
+  appliedCoupon = null;
+  couponError = "";
   checkoutStep = 4;
   renderAll();
 }
@@ -1803,6 +2034,32 @@ function renderAdminPage(main){
       </table>
       </div>
     `;
+  } else if(adminTab === "complaints"){
+    bodyHtml = `
+      <div class="admin-content-head"><h2>${tr("adminComplaints")}</h2></div>
+      <div style="overflow-x:auto;">
+      <table class="admin-table">
+        <thead><tr><th>${tr("complaintEmailCol")}</th><th>${tr("complaintMessageCol")}</th><th>${tr("complaintDateCol")}</th><th>${tr("complaintStatusCol")}</th></tr></thead>
+        <tbody>
+          ${supportTickets.length === 0 ? `<tr><td colspan="4" class="admin-empty">${tr("noComplaints")}</td></tr>` :
+            supportTickets.slice().reverse().map(t=>`
+              <tr>
+                <td>${t.email}</td>
+                <td style="max-width:320px;white-space:normal;">${t.message}</td>
+                <td>${formatDate(t.date)}</td>
+                <td>
+                  <select data-ticketstatus="${t.id}">
+                    <option value="open" ${t.status==='open'?'selected':''}>${tr("statusOpen")}</option>
+                    <option value="resolved" ${t.status==='resolved'?'selected':''}>${tr("statusResolved")}</option>
+                  </select>
+                </td>
+              </tr>
+            `).join("")
+          }
+        </tbody>
+      </table>
+      </div>
+    `;
   }
 
   main.innerHTML = `
@@ -1812,6 +2069,7 @@ function renderAdminPage(main){
         ${adminNavItem("dashboard","layout-dashboard",tr("adminDashboard"))}
         ${adminNavItem("users","users",tr("adminUsers"))}
         ${adminNavItem("orders","package",tr("adminOrders"))}
+        ${adminNavItem("complaints","message-circle",tr("adminComplaints"))}
         <div class="admin-nav-item" id="adminBackToStore"><i data-lucide="arrow-left" style="width:16px;height:16px"></i> ${tr("backToStore")}</div>
         <div class="admin-nav-item exit" id="adminLogoutBtn"><i data-lucide="log-out" style="width:16px;height:16px"></i> ${tr("adminLogout")}</div>
       </div>
@@ -1820,6 +2078,13 @@ function renderAdminPage(main){
   `;
 
   main.querySelectorAll("[data-atab]").forEach(el=>{ el.onclick = () => { adminTab = el.dataset.atab; renderMain(); }; });
+  main.querySelectorAll("[data-ticketstatus]").forEach(sel=>{
+    sel.onchange = (e) => {
+      const t = supportTickets.find(x=>x.id===sel.dataset.ticketstatus);
+      if(t) t.status = e.target.value;
+      renderMain();
+    };
+  });
   document.getElementById("adminBackToStore").onclick = () => { currentView = "home"; renderAll(); window.scrollTo({top:0,behavior:"smooth"}); };
   document.getElementById("adminLogoutBtn").onclick = () => { isAdminLoggedIn = false; currentView = "home"; renderAll(); window.scrollTo({top:0,behavior:"smooth"}); };
 
@@ -1843,6 +2108,329 @@ function renderAdminPage(main){
   if(window.lucide) lucide.createIcons();
 }
 
+/* ================= owner (secret) panel ================= */
+const ICON_OPTIONS = ["carrot","wheat","coffee","milk","headphones","watch","zap","smartphone","shirt","shopping-bag","droplet","droplets","utensils-crossed","lamp","sparkles","scissors","baby","cloud","gift","activity","dumbbell","bike","puzzle","car","dices","package"];
+let ownerProductFormMode = null; // null | "add" | productId (editing)
+
+function ownerNavItem(key, icon, label){
+  return `<div class="admin-nav-item ${ownerTab===key?'active':''}" data-otab="${key}"><i data-lucide="${icon}" style="width:16px;height:16px"></i> ${label}</div>`;
+}
+
+function productFormHtml(existing){
+  const p = existing || { name:{tr:"",en:"",fr:""}, cat:CATEGORIES[0].id, priceTRY:0, stock:10, icon:"package", badge:null, rating:0, reviews:0, color:"#E6E3D9" };
+  const nameVal = existing ? existing.name[lang] : "";
+  return `
+    <div class="checkout-panel" style="margin-bottom:20px;">
+      <h2>${existing ? tr("editProduct") : tr("addProduct")}</h2>
+      <div class="field"><label>${tr("productNameLbl")}</label><input type="text" id="pfName" value="${nameVal}"></div>
+      <div class="field-row">
+        <div class="field"><label>${tr("categoryLbl")}</label>
+          <select id="pfCat">${CATEGORIES.map(c=>`<option value="${c.id}" ${p.cat===c.id?'selected':''}>${c.icon} ${c.name[lang]}</option>`).join("")}</select>
+        </div>
+        <div class="field"><label>${tr("iconLbl")}</label>
+          <select id="pfIcon">${ICON_OPTIONS.map(ic=>`<option value="${ic}" ${p.icon===ic?'selected':''}>${ic}</option>`).join("")}</select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>${tr("priceLbl")}</label><input type="number" id="pfPrice" value="${p.priceTRY}" min="0" step="0.1"></div>
+        <div class="field"><label>${tr("stockLbl")}</label><input type="number" id="pfStock" value="${p.stock}" min="0" step="1"></div>
+      </div>
+      <div class="field"><label>${tr("badgeLbl")}</label>
+        <select id="pfBadge">
+          <option value="" ${!p.badge?'selected':''}>${tr("noneOption")}</option>
+          <option value="new" ${p.badge==='new'?'selected':''}>${tr("new")}</option>
+          <option value="discount" ${p.badge==='discount'?'selected':''}>${tr("discount")}</option>
+          <option value="bestSeller" ${p.badge==='bestSeller'?'selected':''}>${tr("bestSeller")}</option>
+        </select>
+      </div>
+      <div class="checkout-actions">
+        <button class="btn-secondary" id="pfCancel">${tr("cancelBtn")}</button>
+        <button class="btn-primary" id="pfSave">${tr("saveProduct")}</button>
+      </div>
+    </div>
+  `;
+}
+function bindProductForm(existingId){
+  document.getElementById("pfCancel").onclick = () => { ownerProductFormMode = null; renderMain(); };
+  document.getElementById("pfSave").onclick = () => {
+    const name = document.getElementById("pfName").value.trim();
+    const cat = document.getElementById("pfCat").value;
+    const icon = document.getElementById("pfIcon").value;
+    const priceTRY = parseFloat(document.getElementById("pfPrice").value) || 0;
+    const stock = parseInt(document.getElementById("pfStock").value) || 0;
+    const badge = document.getElementById("pfBadge").value || null;
+    if(!name) return;
+    const PALETTE = ["#EDE6C8","#DCE4EC","#EAE0E6","#E9DACF","#E6DCEA","#DFEBDF","#DCE7DE","#F2DFC7"];
+    if(existingId){
+      const p = PRODUCTS.find(pr=>pr.id===existingId);
+      p.name = { tr:name, en:name, fr:name };
+      p.cat = cat; p.icon = icon; p.priceTRY = priceTRY; p.stock = stock; p.badge = badge;
+      showToast(tr("productUpdated"), "check-circle");
+    } else {
+      const newId = Math.max(...PRODUCTS.map(p=>p.id)) + 1;
+      PRODUCTS.push({
+        id:newId, cat, priceTRY, rating:0, reviews:0, badge, stock, icon,
+        color: PALETTE[newId % PALETTE.length],
+        name:{ tr:name, en:name, fr:name },
+      });
+      showToast(tr("productAdded"), "check-circle");
+    }
+    ownerProductFormMode = null;
+    renderMain();
+  };
+}
+
+function renderOwnerPage(main){
+  if(!isOwnerLoggedIn){
+    main.innerHTML = `
+      <div class="admin-login-wrap">
+        <div class="icon-circle"><i data-lucide="key-round" style="width:26px;height:26px;color:var(--navy)"></i></div>
+        <h2>${tr("ownerPanel")}</h2>
+        <p>${tr("ownerDemoHint")}</p>
+        <button class="btn-primary" id="openOwnerLoginBtn" style="width:100%;">${tr("ownerLoginBtn")}</button>
+      </div>
+    `;
+    document.getElementById("openOwnerLoginBtn").onclick = openOwnerLoginModal;
+    if(window.lucide) lucide.createIcons();
+    return;
+  }
+
+  const totalRevenue = orders.reduce((s,o)=>s+o.totalTRY,0);
+  let bodyHtml = "";
+
+  if(ownerTab === "dashboard"){
+    bodyHtml = `
+      <div class="admin-content-head"><h2>${tr("ownerWelcome")}, ${currentOwner.name}</h2></div>
+      <div class="stat-cards">
+        <div class="stat-card"><div class="stat-icon"><i data-lucide="users" style="width:20px;height:20px;color:var(--navy)"></i></div><div><div class="num">${users.length}</div><div class="lbl">${tr("totalUsers")}</div></div></div>
+        <div class="stat-card"><div class="stat-icon"><i data-lucide="package" style="width:20px;height:20px;color:var(--navy)"></i></div><div><div class="num">${orders.length}</div><div class="lbl">${tr("totalOrders")}</div></div></div>
+        <div class="stat-card"><div class="stat-icon"><i data-lucide="banknote" style="width:20px;height:20px;color:var(--navy)"></i></div><div><div class="num">${formatPrice(totalRevenue)}</div><div class="lbl">${tr("totalRevenue")}</div></div></div>
+        <div class="stat-card"><div class="stat-icon"><i data-lucide="box" style="width:20px;height:20px;color:var(--navy)"></i></div><div><div class="num">${PRODUCTS.length}</div><div class="lbl">${tr("totalProducts")}</div></div></div>
+      </div>
+      ${salesChartHtml()}
+    `;
+  } else if(ownerTab === "users"){
+    bodyHtml = `
+      <div class="admin-content-head"><h2>${tr("adminUsers")}</h2></div>
+      <div style="overflow-x:auto;">
+      <table class="admin-table">
+        <thead><tr><th>${tr("userNameCol")}</th><th>${tr("userEmailCol")}</th><th>${tr("userJoinedCol")}</th><th></th></tr></thead>
+        <tbody>
+          ${users.length === 0 ? `<tr><td colspan="4" class="admin-empty">${tr("noUsers")}</td></tr>` :
+            users.map(u=>`
+              <tr>
+                <td><span class="table-avatar">${initials(u.name)}</span>${u.name}</td>
+                <td>${u.email}</td><td>${formatDate(u.createdAt)}</td>
+                <td><button class="btn-secondary" data-deluser="${u.id}" style="padding:6px 12px;font-size:12px;">${tr("deleteBtn")}</button></td>
+              </tr>
+            `).join("")
+          }
+        </tbody>
+      </table>
+      </div>
+    `;
+  } else if(ownerTab === "orders"){
+    bodyHtml = `
+      <div class="admin-content-head"><h2>${tr("adminOrders")}</h2></div>
+      <div style="overflow-x:auto;">
+      <table class="admin-table">
+        <thead><tr><th>${tr("orderIdCol")}</th><th>${tr("orderUserCol")}</th><th>${tr("orderDateCol")}</th><th>${tr("orderTotalCol")}</th><th>${tr("orderStatusCol")}</th></tr></thead>
+        <tbody>
+          ${orders.length === 0 ? `<tr><td colspan="5" class="admin-empty">${tr("noOrdersAdmin")}</td></tr>` :
+            orders.slice().reverse().map(o=>`
+              <tr>
+                <td>${o.id}</td><td>${o.userName||o.userEmail}</td><td>${formatDate(o.date)}</td><td>${formatPrice(o.totalTRY)}</td>
+                <td><select data-orderstatus2="${o.id}">${ORDER_STATUSES.map(s=>`<option value="${s}" ${o.status===s?'selected':''}>${tr("status"+s.charAt(0).toUpperCase()+s.slice(1))}</option>`).join("")}</select></td>
+              </tr>
+            `).join("")
+          }
+        </tbody>
+      </table>
+      </div>
+    `;
+  } else if(ownerTab === "complaints"){
+    bodyHtml = `
+      <div class="admin-content-head"><h2>${tr("adminComplaints")}</h2></div>
+      <div style="overflow-x:auto;">
+      <table class="admin-table">
+        <thead><tr><th>${tr("complaintEmailCol")}</th><th>${tr("complaintMessageCol")}</th><th>${tr("complaintDateCol")}</th><th>${tr("complaintStatusCol")}</th></tr></thead>
+        <tbody>
+          ${supportTickets.length === 0 ? `<tr><td colspan="4" class="admin-empty">${tr("noComplaints")}</td></tr>` :
+            supportTickets.slice().reverse().map(t=>`
+              <tr>
+                <td>${t.email}</td><td style="max-width:320px;white-space:normal;">${t.message}</td><td>${formatDate(t.date)}</td>
+                <td><select data-ticketstatus2="${t.id}"><option value="open" ${t.status==='open'?'selected':''}>${tr("statusOpen")}</option><option value="resolved" ${t.status==='resolved'?'selected':''}>${tr("statusResolved")}</option></select></td>
+              </tr>
+            `).join("")
+          }
+        </tbody>
+      </table>
+      </div>
+    `;
+  } else if(ownerTab === "products"){
+    bodyHtml = `
+      <div class="admin-content-head">
+        <h2>${tr("ownerProducts")}</h2>
+        ${ownerProductFormMode === null ? `<button class="btn-primary" id="pfAddNew" style="width:auto;padding:9px 18px;">${tr("addProduct")}</button>` : ""}
+      </div>
+      ${ownerProductFormMode !== null ? productFormHtml(ownerProductFormMode === "add" ? null : PRODUCTS.find(p=>p.id===ownerProductFormMode)) : ""}
+      <div style="overflow-x:auto;">
+      <table class="admin-table">
+        <thead><tr><th>${tr("productNameLbl")}</th><th>${tr("categoryLbl")}</th><th>${tr("priceLbl")}</th><th>${tr("stockLbl")}</th><th></th></tr></thead>
+        <tbody>
+          ${PRODUCTS.map(p=>`
+            <tr>
+              <td>${p.name[lang]}</td><td>${catIcon(p.cat)} ${catName(p.cat)}</td><td>${formatPrice(p.priceTRY)}</td>
+              <td>${p.stock <= 0 ? `<span class="status-pill cancelled">${tr("outOfStock")}</span>` : p.stock <=5 ? `<span class="status-pill preparing">${p.stock}</span>` : p.stock}</td>
+              <td style="white-space:nowrap;">
+                <button class="btn-secondary" data-editproduct="${p.id}" style="padding:6px 10px;font-size:12px;margin-right:6px;">${tr("editProduct")}</button>
+                <button class="btn-secondary" data-delproduct="${p.id}" style="padding:6px 10px;font-size:12px;color:var(--red);">${tr("deleteBtn")}</button>
+              </td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+      </div>
+    `;
+  } else if(ownerTab === "coupons"){
+    bodyHtml = `
+      <div class="admin-content-head"><h2>${tr("ownerCoupons")}</h2></div>
+      <div class="checkout-panel" style="margin-bottom:20px;">
+        <h2>${tr("addCoupon")}</h2>
+        <div class="field-row">
+          <div class="field"><label>${tr("couponCodeLbl")}</label><input type="text" id="newCouponCode" placeholder="ORNEK20"></div>
+          <div class="field"><label>${tr("couponPercentLbl")}</label><input type="number" id="newCouponPercent" min="1" max="90" value="10"></div>
+        </div>
+        <button class="btn-primary" id="addCouponBtn" style="width:auto;padding:10px 22px;">${tr("saveProduct")}</button>
+      </div>
+      <div style="overflow-x:auto;">
+      <table class="admin-table">
+        <thead><tr><th>${tr("couponCodeCol")}</th><th>${tr("couponPercentCol")}</th><th>${tr("couponActiveCol")}</th><th></th></tr></thead>
+        <tbody>
+          ${coupons.length === 0 ? `<tr><td colspan="4" class="admin-empty">${tr("noCoupons")}</td></tr>` :
+            coupons.map((c,idx)=>`
+              <tr>
+                <td>${c.code}</td><td>%${c.percent}</td>
+                <td><input type="checkbox" data-couponactive="${idx}" ${c.active?'checked':''}></td>
+                <td><button class="btn-secondary" data-delcoupon="${idx}" style="padding:6px 10px;font-size:12px;color:var(--red);">${tr("deleteBtn")}</button></td>
+              </tr>
+            `).join("")
+          }
+        </tbody>
+      </table>
+      </div>
+    `;
+  }
+
+  main.innerHTML = `
+    <div class="admin-wrap">
+      <div class="admin-sidebar">
+        <div class="brand"><i data-lucide="key-round" style="width:18px;height:18px;color:var(--amber)"></i> ${tr("ownerPanel")}</div>
+        ${ownerNavItem("dashboard","layout-dashboard",tr("adminDashboard"))}
+        ${ownerNavItem("users","users",tr("adminUsers"))}
+        ${ownerNavItem("orders","package",tr("adminOrders"))}
+        ${ownerNavItem("complaints","message-circle",tr("adminComplaints"))}
+        ${ownerNavItem("products","box",tr("ownerProducts"))}
+        ${ownerNavItem("coupons","tag",tr("ownerCoupons"))}
+        <div class="admin-nav-item" id="ownerBackToStore"><i data-lucide="arrow-left" style="width:16px;height:16px"></i> ${tr("backToStore")}</div>
+        <div class="admin-nav-item exit" id="ownerLogoutBtn"><i data-lucide="log-out" style="width:16px;height:16px"></i> ${tr("ownerLogout")}</div>
+      </div>
+      <div class="admin-content">${bodyHtml}</div>
+    </div>
+  `;
+
+  main.querySelectorAll("[data-otab]").forEach(el=>{ el.onclick = () => { ownerProductFormMode = null; ownerTab = el.dataset.otab; renderMain(); }; });
+  document.getElementById("ownerBackToStore").onclick = () => { currentView = "home"; renderAll(); window.scrollTo({top:0,behavior:"smooth"}); };
+  document.getElementById("ownerLogoutBtn").onclick = () => { isOwnerLoggedIn = false; currentOwner = null; currentView = "home"; renderAll(); window.scrollTo({top:0,behavior:"smooth"}); };
+
+  main.querySelectorAll("[data-deluser]").forEach(btn=>{
+    btn.onclick = () => {
+      if(!confirm(tr("deleteUserConfirm"))) return;
+      const id = Number(btn.dataset.deluser);
+      users = users.filter(u=>u.id!==id);
+      if(currentUser && currentUser.id === id) currentUser = null;
+      renderMain();
+    };
+  });
+  main.querySelectorAll("[data-orderstatus2]").forEach(sel=>{
+    sel.onchange = (e) => { const o = orders.find(o=>o.id===sel.dataset.orderstatus2); if(o) o.status = e.target.value; renderMain(); };
+  });
+  main.querySelectorAll("[data-ticketstatus2]").forEach(sel=>{
+    sel.onchange = (e) => { const t = supportTickets.find(x=>x.id===sel.dataset.ticketstatus2); if(t) t.status = e.target.value; renderMain(); };
+  });
+
+  const addNewBtn = document.getElementById("pfAddNew");
+  if(addNewBtn) addNewBtn.onclick = () => { ownerProductFormMode = "add"; renderMain(); };
+  if(ownerProductFormMode !== null) bindProductForm(ownerProductFormMode === "add" ? null : ownerProductFormMode);
+  main.querySelectorAll("[data-editproduct]").forEach(btn=>{
+    btn.onclick = () => { ownerProductFormMode = Number(btn.dataset.editproduct); renderMain(); };
+  });
+  main.querySelectorAll("[data-delproduct]").forEach(btn=>{
+    btn.onclick = () => {
+      if(!confirm(tr("deleteProductConfirm"))) return;
+      const id = Number(btn.dataset.delproduct);
+      const idx = PRODUCTS.findIndex(p=>p.id===id);
+      if(idx > -1) PRODUCTS.splice(idx,1);
+      showToast(tr("productDeleted"),"trash-2");
+      renderMain();
+    };
+  });
+
+  const addCouponBtn = document.getElementById("addCouponBtn");
+  if(addCouponBtn){
+    addCouponBtn.onclick = () => {
+      const code = document.getElementById("newCouponCode").value.trim().toUpperCase();
+      const percent = parseInt(document.getElementById("newCouponPercent").value) || 0;
+      if(!code || percent <= 0) return;
+      coupons.push({ code, percent, active:true });
+      renderMain();
+    };
+  }
+  main.querySelectorAll("[data-couponactive]").forEach(chk=>{
+    chk.onchange = (e) => { coupons[Number(chk.dataset.couponactive)].active = e.target.checked; };
+  });
+  main.querySelectorAll("[data-delcoupon]").forEach(btn=>{
+    btn.onclick = () => {
+      if(!confirm(tr("couponDeleteConfirm"))) return;
+      coupons.splice(Number(btn.dataset.delcoupon),1);
+      renderMain();
+    };
+  });
+
+  if(window.lucide) lucide.createIcons();
+}
+
+function salesChartHtml(){
+  const days = [];
+  for(let i=6;i>=0;i--){
+    const d = new Date(); d.setDate(d.getDate()-i);
+    days.push(d);
+  }
+  const dayTotals = days.map(d=>{
+    const key = d.toDateString();
+    const total = orders.filter(o=>new Date(o.date).toDateString()===key).reduce((s,o)=>s+o.totalTRY,0);
+    return { label: d.toLocaleDateString(lang==='tr'?'tr-TR':lang==='fr'?'fr-FR':'en-US',{weekday:'short'}), total };
+  });
+  const max = Math.max(...dayTotals.map(d=>d.total), 1);
+  const hasData = orders.length > 0;
+  return `
+    <div class="checkout-panel">
+      <h2>${tr("salesChartTitle")} · ${tr("last7Days")}</h2>
+      ${!hasData ? `<div class="admin-empty">${tr("noSalesData")}</div>` : `
+        <div style="display:flex;align-items:flex-end;gap:14px;height:180px;padding-top:10px;">
+          ${dayTotals.map(d=>`
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end;">
+              <div style="font-size:11px;color:var(--muted);">${d.total > 0 ? formatPrice(d.total) : ""}</div>
+              <div style="width:100%;max-width:34px;background:linear-gradient(180deg,var(--amber),var(--amber-dark));border-radius:6px 6px 0 0;height:${Math.max(4, (d.total/max)*130)}px;"></div>
+              <div style="font-size:11px;color:var(--muted);text-transform:capitalize;">${d.label}</div>
+            </div>
+          `).join("")}
+        </div>
+      `}
+    </div>
+  `;
+}
+
 /* ================= cart ================= */
 function cartCount(){ return Object.values(cart).reduce((s,q)=>s+q,0); }
 function cartTotalTRY(){
@@ -1851,8 +2439,18 @@ function cartTotalTRY(){
     return sum + (p ? p.priceTRY*qty : 0);
   },0);
 }
-function addToCart(id){ cart[id] = (cart[id]||0)+1; showToast(tr("toastAddedToCart"),"shopping-cart"); renderAll(); }
-function changeQty(id, delta){ cart[id] = Math.max(0,(cart[id]||0)+delta); renderAll(); }
+function addToCart(id){
+  const p = PRODUCTS.find(pr=>pr.id===id);
+  if(p && p.stock <= 0) return;
+  cart[id] = (cart[id]||0)+1;
+  showToast(tr("toastAddedToCart"),"shopping-cart"); renderAll();
+}
+function changeQty(id, delta){
+  const p = PRODUCTS.find(pr=>pr.id===id);
+  const max = p ? p.stock : 999;
+  cart[id] = Math.max(0, Math.min(max, (cart[id]||0)+delta));
+  renderAll();
+}
 function removeFromCart(id){ cart[id] = 0; renderAll(); }
 function renderCartBadge(){ document.getElementById("cartBadge").textContent = cartCount(); }
 
@@ -1963,7 +2561,7 @@ document.getElementById("newsletterBtn").onclick = () => {
 };
 
 document.getElementById("overlay").onclick = () => {
-  closeCartDrawer(); closeSideDrawer(); closeAuthModalFn(); closeAccountModalFn(); closeAdminLoginModalFn();
+  closeCartDrawer(); closeSideDrawer(); closeAuthModalFn(); closeAccountModalFn(); closeAdminLoginModalFn(); closeSupportModalFn(); closeOwnerLoginModalFn();
 };
 
 /* ================= init ================= */
