@@ -735,7 +735,7 @@ const LANGS = {
     addCoupon:"Yeni Kupon Ekle", couponCodeLbl:"Kupon Kodu", couponPercentLbl:"İndirim (%)", noCoupons:"Henüz kupon yok.",
     couponCodeCol:"Kod", couponPercentCol:"İndirim", couponActiveCol:"Aktif", couponDeleteConfirm:"Bu kuponu silmek istediğinize emin misiniz?",
     last7Days:"Son 7 gün", salesChartTitle:"Günlük Ciro", noSalesData:"Henüz satış verisi yok.",
-    secretHint:"Bu paneli açmak için Ctrl+Shift+O tuşlarına basın.",
+    secretHint:"Bu paneli açmak için Alt+Shift+P tuşlarına basın (ya da adresin sonuna #owner-panel ekleyin).",
   },
   en: { code:"EN", flag:"🇬🇧", name:"English", currency:"$", rate:0.029,
     deliveryLabel:"Delivering to", deliveryValue:"Kadikoy, Istanbul",
@@ -825,7 +825,7 @@ const LANGS = {
     addCoupon:"Add New Coupon", couponCodeLbl:"Coupon Code", couponPercentLbl:"Discount (%)", noCoupons:"No coupons yet.",
     couponCodeCol:"Code", couponPercentCol:"Discount", couponActiveCol:"Active", couponDeleteConfirm:"Are you sure you want to delete this coupon?",
     last7Days:"Last 7 days", salesChartTitle:"Daily Revenue", noSalesData:"No sales data yet.",
-    secretHint:"Press Ctrl+Shift+O to open this panel.",
+    secretHint:"Press Alt+Shift+P to open this panel (or add #owner-panel to the URL).",
   },
   fr: { code:"FR", flag:"🇫🇷", name:"Français", currency:"€", rate:0.027,
     deliveryLabel:"Livraison à", deliveryValue:"Kadikoy, Istanbul",
@@ -915,7 +915,7 @@ const LANGS = {
     addCoupon:"Ajouter un code promo", couponCodeLbl:"Code promo", couponPercentLbl:"Réduction (%)", noCoupons:"Aucun code promo pour le moment.",
     couponCodeCol:"Code", couponPercentCol:"Réduction", couponActiveCol:"Actif", couponDeleteConfirm:"Voulez-vous vraiment supprimer ce code promo ?",
     last7Days:"7 derniers jours", salesChartTitle:"Chiffre d'affaires quotidien", noSalesData:"Aucune donnée de vente pour le moment.",
-    secretHint:"Appuyez sur Ctrl+Shift+O pour ouvrir ce panneau.",
+    secretHint:"Appuyez sur Alt+Shift+P pour ouvrir ce panneau (ou ajoutez #owner-panel à l'URL).",
   }
 };
 
@@ -1404,12 +1404,15 @@ document.getElementById("ownerLoginForm").addEventListener("submit",(e)=>{
   }
 });
 document.addEventListener("keydown",(e)=>{
-  if(e.ctrlKey && e.shiftKey && (e.key === "O" || e.key === "o")){
+  if(e.altKey && e.shiftKey && (e.key === "P" || e.key === "p")){
     e.preventDefault();
     if(isOwnerLoggedIn){ currentView = "owner"; ownerTab = "dashboard"; renderAll(); window.scrollTo({top:0,behavior:"smooth"}); }
     else { openOwnerLoginModal(); }
   }
 });
+if(window.location.hash === "#owner-panel" && !isOwnerLoggedIn){
+  openOwnerLoginModal();
+}
 
 /* ================= side drawer / cat nav ================= */
 function renderSideDrawer(){
