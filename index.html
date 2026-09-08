@@ -164,7 +164,7 @@
   .badge.new{background:var(--green);}
   .badge.discount{background:var(--red);}
   .badge.bestSeller{background:var(--amber-dark);}
-  .fav-btn{position:absolute;top:10px;right:10px;background:var(--surface);border:1px solid var(--border);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;}
+  .fav-btn{position:static;background:var(--surface);border:1px solid var(--border);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;flex-shrink:0;}
   .fav-btn.active{background:#FDEAEA;border-color:#F0C6C6;}
   .card-clickable{cursor:pointer;}
   .thumb{height:118px;border-radius:10px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;}
@@ -372,6 +372,31 @@
   .toast{background:var(--navy-dark);color:#fff;padding:13px 18px;border-radius:11px;font-size:13.5px;box-shadow:0 12px 28px rgba(0,0,0,0.25);display:flex;align-items:center;gap:10px;animation:toastIn .2s ease;}
   @keyframes toastIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 
+  .compare-bar{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--navy-dark);color:#fff;border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 14px 34px rgba(0,0,0,0.3);z-index:350;flex-wrap:wrap;max-width:92vw;}
+  .compare-bar .thumbs{display:flex;gap:8px;}
+  .compare-bar .thumbs div{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;}
+  .compare-bar button{border:none;border-radius:9px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;}
+  .compare-bar .go{background:var(--amber);color:var(--navy-dark);}
+  .compare-bar .clear{background:rgba(255,255,255,0.1);color:#fff;}
+
+  .cart-reminder{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--navy-dark);color:#fff;border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px;box-shadow:0 14px 34px rgba(0,0,0,0.3);z-index:340;max-width:92vw;}
+  .cart-reminder button.go{background:var(--amber);color:var(--navy-dark);border:none;border-radius:9px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;}
+  .cart-reminder button.dismiss{background:none;border:none;color:#B9C7D4;cursor:pointer;display:flex;}
+
+  .compare-table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:14px;overflow:hidden;border:1px solid var(--border);}
+  .compare-table th, .compare-table td{padding:14px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top;}
+  .compare-table th{background:var(--bg);font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;width:140px;}
+  .compare-col-head{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;}
+  .compare-col-head .pname{font-weight:700;font-size:13.5px;min-height:auto;}
+  .compare-remove{background:none;border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-size:11px;cursor:pointer;color:var(--red);}
+
+  .address-card{border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .address-card.selected{border-color:var(--amber);background:#FFF8ED;}
+  body.dark-mode .address-card.selected{background:rgba(242,163,62,0.08);}
+  .address-card .lbl-title{font-weight:700;font-size:13.5px;margin-bottom:4px;}
+  .address-card .addr-text{font-size:12.5px;color:var(--muted);}
+  .address-card button{background:none;border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-size:12.5px;font-weight:700;cursor:pointer;color:var(--navy);white-space:nowrap;}
+
   @media (max-width:800px){
     .checkout-wrap{grid-template-columns:1fr;}
     .checkout-summary{position:static;}
@@ -497,6 +522,8 @@
 
 <div class="overlay" id="overlay"></div>
 <div class="toast-container" id="toastContainer"></div>
+<div class="compare-bar" id="compareBar" style="display:none;"></div>
+<div class="cart-reminder" id="cartReminder" style="display:none;"></div>
 
 <div class="side-drawer" id="sideDrawer">
   <div class="side-drawer-head">
@@ -735,6 +762,14 @@ const LANGS = {
     couponCodeCol:"Kod", couponPercentCol:"İndirim", couponActiveCol:"Aktif", couponDeleteConfirm:"Bu kuponu silmek istediğinize emin misiniz?",
     last7Days:"Son 7 gün", salesChartTitle:"Günlük Ciro", noSalesData:"Henüz satış verisi yok.",
     secretHint:"Bu paneli açmak için Alt+Shift+P tuşlarına basın (ya da adresin sonuna #owner-panel ekleyin).",
+    compareBtn:"Karşılaştır", compareBarTitle:"ürün seçildi", compareNow:"Karşılaştır", clearCompare:"Temizle",
+    compareTitle:"Ürün Karşılaştırma", compareEmpty:"Karşılaştırmak için ürün seçin.", removeFromCompare:"Kaldır",
+    maxCompareReached:"En fazla 3 ürün karşılaştırabilirsiniz.",
+    compareAttrPrice:"Fiyat", compareAttrRating:"Puan", compareAttrCategory:"Kategori", compareAttrStock:"Stok", compareAttrBadge:"Rozet",
+    cartReminderMsg:"Sepetinizde ürünler sizi bekliyor!", cartReminderGoBtn:"Sepete git",
+    savedAddresses:"Kayıtlı Adreslerim", addNewAddress:"+ Yeni adres ekle", useThisAddress:"Bu adresi kullan",
+    addressLabelLbl:"Adres başlığı (ör. Ev, İş)", saveAddressCheckbox:"Bu adresi kaydet",
+    backToAddressList:"Kayıtlı adreslerime dön", noSavedAddresses:"Henüz kayıtlı adresiniz yok.",
   },
   en: { code:"EN", flag:"🇬🇧", name:"English", currency:"$", rate:0.029,
     deliveryLabel:"Delivering to", deliveryValue:"Kadikoy, Istanbul",
@@ -825,6 +860,14 @@ const LANGS = {
     couponCodeCol:"Code", couponPercentCol:"Discount", couponActiveCol:"Active", couponDeleteConfirm:"Are you sure you want to delete this coupon?",
     last7Days:"Last 7 days", salesChartTitle:"Daily Revenue", noSalesData:"No sales data yet.",
     secretHint:"Press Alt+Shift+P to open this panel (or add #owner-panel to the URL).",
+    compareBtn:"Compare", compareBarTitle:"selected", compareNow:"Compare", clearCompare:"Clear",
+    compareTitle:"Product Comparison", compareEmpty:"Select products to compare.", removeFromCompare:"Remove",
+    maxCompareReached:"You can compare up to 3 products.",
+    compareAttrPrice:"Price", compareAttrRating:"Rating", compareAttrCategory:"Category", compareAttrStock:"Stock", compareAttrBadge:"Badge",
+    cartReminderMsg:"You have items waiting in your cart!", cartReminderGoBtn:"Go to cart",
+    savedAddresses:"Saved Addresses", addNewAddress:"+ Add new address", useThisAddress:"Use this address",
+    addressLabelLbl:"Address label (e.g. Home, Work)", saveAddressCheckbox:"Save this address",
+    backToAddressList:"Back to saved addresses", noSavedAddresses:"You have no saved addresses yet.",
   },
   fr: { code:"FR", flag:"🇫🇷", name:"Français", currency:"€", rate:0.027,
     deliveryLabel:"Livraison à", deliveryValue:"Kadikoy, Istanbul",
@@ -915,6 +958,14 @@ const LANGS = {
     couponCodeCol:"Code", couponPercentCol:"Réduction", couponActiveCol:"Actif", couponDeleteConfirm:"Voulez-vous vraiment supprimer ce code promo ?",
     last7Days:"7 derniers jours", salesChartTitle:"Chiffre d'affaires quotidien", noSalesData:"Aucune donnée de vente pour le moment.",
     secretHint:"Appuyez sur Alt+Shift+P pour ouvrir ce panneau (ou ajoutez #owner-panel à l'URL).",
+    compareBtn:"Comparer", compareBarTitle:"sélectionné(s)", compareNow:"Comparer", clearCompare:"Effacer",
+    compareTitle:"Comparaison de produits", compareEmpty:"Sélectionnez des produits à comparer.", removeFromCompare:"Retirer",
+    maxCompareReached:"Vous pouvez comparer jusqu'à 3 produits.",
+    compareAttrPrice:"Prix", compareAttrRating:"Note", compareAttrCategory:"Catégorie", compareAttrStock:"Stock", compareAttrBadge:"Badge",
+    cartReminderMsg:"Des articles vous attendent dans votre panier !", cartReminderGoBtn:"Voir le panier",
+    savedAddresses:"Adresses enregistrées", addNewAddress:"+ Ajouter une nouvelle adresse", useThisAddress:"Utiliser cette adresse",
+    addressLabelLbl:"Nom de l'adresse (ex. Domicile, Travail)", saveAddressCheckbox:"Enregistrer cette adresse",
+    backToAddressList:"Retour à mes adresses enregistrées", noSavedAddresses:"Vous n'avez pas encore d'adresse enregistrée.",
   }
 };
 
@@ -1042,6 +1093,13 @@ let supportTickets = [];
 let coupons = [ { code:"HOSGELDIN10", percent:10, active:true }, { code:"PAZAR20", percent:20, active:true } ];
 let appliedCoupon = null;
 let couponError = "";
+let compareList = [];
+let cartReminderShown = false;
+let cartReminderDismissed = false;
+let cartReminderTimer = null;
+let addressFormMode = "select"; // "select" | "new"
+let selectedAddressIdx = null;
+let saveNewAddress = false;
 
 let isOwnerLoggedIn = false;
 let currentOwner = null;
@@ -1085,6 +1143,11 @@ function getSeedReviews(p){
 }
 function formatDate(d){
   return new Date(d).toLocaleDateString(lang==='tr'?'tr-TR':lang==='fr'?'fr-FR':'en-US', {year:'numeric', month:'short', day:'numeric'});
+}
+function getUserAddresses(){
+  if(!currentUser) return [];
+  const u = users.find(x=>x.id===currentUser.id);
+  return (u && u.addresses) || [];
 }
 
 /* ================= theme ================= */
@@ -1249,7 +1312,7 @@ document.getElementById("authForm").addEventListener("submit",(e)=>{
   if(authTab === "register"){
     if(!name || !email || !password){ errEl.textContent = tr("errFillAll"); errEl.classList.add("show"); return; }
     if(users.some(u=>u.email===email)){ errEl.textContent = tr("errEmailTaken"); errEl.classList.add("show"); return; }
-    const newUser = { id: Date.now(), name, email, password, createdAt: new Date().toISOString() };
+    const newUser = { id: Date.now(), name, email, password, createdAt: new Date().toISOString(), addresses: [] };
     users.push(newUser);
     currentUser = { id:newUser.id, name:newUser.name, email:newUser.email };
     closeAuthModalFn();
@@ -1265,7 +1328,7 @@ document.getElementById("authForm").addEventListener("submit",(e)=>{
 });
 
 function afterLoginContinue(){
-  if(pendingCheckoutAfterLogin){ pendingCheckoutAfterLogin = false; currentView = "checkout"; checkoutStep = 1; }
+  if(pendingCheckoutAfterLogin){ pendingCheckoutAfterLogin = false; currentView = "checkout"; checkoutStep = 1; addressFormMode = "select"; selectedAddressIdx = null; }
   renderAll();
 }
 
@@ -1474,13 +1537,17 @@ function thumbHtml(p, size){
 function productCard(p){
   const qty = cart[p.id] || 0;
   const isFav = !!favorites[p.id];
+  const isCompared = compareList.includes(p.id);
   const badge = p.badge ? `<span class="badge ${p.badge}">${tr(p.badge)}</span>` : "";
   const outOfStock = p.stock <= 0;
   const lowStock = p.stock > 0 && p.stock <= 5;
   return `
     <div class="card">
       ${badge}
-      <button class="fav-btn ${isFav?'active':''}" data-fav="${p.id}"><i data-lucide="heart" style="width:15px;height:15px;color:${isFav?'#B23A3A':'var(--muted)'}" ${isFav?'fill="#B23A3A"':''}></i></button>
+      <div style="position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:6px;z-index:2;">
+        <button class="fav-btn ${isFav?'active':''}" data-fav="${p.id}"><i data-lucide="heart" style="width:15px;height:15px;color:${isFav?'#B23A3A':'var(--muted)'}" ${isFav?'fill="#B23A3A"':''}></i></button>
+        <button class="fav-btn ${isCompared?'active':''}" data-compare="${p.id}" title="${tr('compareBtn')}"><i data-lucide="git-compare-arrows" style="width:15px;height:15px;color:${isCompared?'var(--navy)':'var(--muted)'}"></i></button>
+      </div>
       <div class="card-clickable" data-open="${p.id}">
         ${thumbHtml(p, 40)}
         <div class="pname">${p.name[lang]}</div>
@@ -1507,11 +1574,21 @@ function bindProductEvents(container){
   container.querySelectorAll("[data-minus]").forEach(btn=>{ btn.onclick = () => changeQty(Number(btn.dataset.minus), -1); });
   container.querySelectorAll("[data-plus]").forEach(btn=>{ btn.onclick = () => changeQty(Number(btn.dataset.plus), 1); });
   container.querySelectorAll("[data-fav]").forEach(btn=>{ btn.onclick = () => toggleFavorite(Number(btn.dataset.fav)); });
+  container.querySelectorAll("[data-compare]").forEach(btn=>{ btn.onclick = () => toggleCompare(Number(btn.dataset.compare)); });
   container.querySelectorAll("[data-open]").forEach(el=>{ el.onclick = () => openProduct(Number(el.dataset.open)); });
 }
 function toggleFavorite(id){
   if(favorites[id]){ delete favorites[id]; showToast(tr("toastFavRemoved"),"heart"); }
   else { favorites[id] = true; showToast(tr("toastFavAdded"),"heart"); }
+  renderAll();
+}
+function toggleCompare(id){
+  if(compareList.includes(id)){
+    compareList = compareList.filter(x=>x!==id);
+  } else {
+    if(compareList.length >= 3){ showToast(tr("maxCompareReached"),"git-compare-arrows"); return; }
+    compareList.push(id);
+  }
   renderAll();
 }
 function openProduct(id){ selectedProductId = id; currentView = "product"; renderAll(); window.scrollTo({top:0,behavior:"smooth"}); }
@@ -1563,6 +1640,7 @@ function renderMain(){
   if(currentView === "checkout"){ renderCheckoutPage(main); return; }
   if(currentView === "orders"){ renderOrdersPage(main); return; }
   if(currentView === "favorites"){ renderFavoritesPage(main); return; }
+  if(currentView === "compare"){ renderComparePage(main); return; }
 
   if(query.trim() !== ""){
     let results = PRODUCTS.filter(p => p.name[lang].toLowerCase().includes(query.toLowerCase()));
@@ -1798,19 +1876,50 @@ function renderCheckoutPage(main){
 
   let panel = "";
   if(checkoutStep === 1){
-    panel = `
-      <div class="checkout-panel">
-        <h2>${tr("checkoutTitleStep1")}</h2>
-        <div class="field"><label>${tr("fullNameLbl")}</label><input type="text" id="ckFullName" value="${checkoutData.fullName}"></div>
-        <div class="field"><label>${tr("addressLbl")}</label><input type="text" id="ckAddress" value="${checkoutData.address}"></div>
-        <div class="field-row">
-          <div class="field"><label>${tr("cityLbl")}</label><input type="text" id="ckCity" value="${checkoutData.city}"></div>
-          <div class="field"><label>${tr("phoneLbl")}</label><input type="text" id="ckPhone" value="${checkoutData.phone}"></div>
+    const savedAddresses = currentUser ? getUserAddresses() : [];
+    if(currentUser && savedAddresses.length > 0 && addressFormMode === "select"){
+      panel = `
+        <div class="checkout-panel">
+          <h2>${tr("savedAddresses")}</h2>
+          ${savedAddresses.map((a,idx)=>`
+            <div class="address-card ${selectedAddressIdx===idx?'selected':''}" data-selectaddr="${idx}">
+              <div>
+                <div class="lbl-title">${a.label}</div>
+                <div class="addr-text">${a.fullName} · ${a.address}, ${a.city} · ${a.phone}</div>
+              </div>
+              <button data-selectaddr="${idx}">${tr("useThisAddress")}</button>
+            </div>
+          `).join("")}
+          <button class="btn-secondary" id="ckAddNewAddrBtn" style="width:100%;margin-top:6px;">${tr("addNewAddress")}</button>
+          <div class="form-error" id="ckError1"></div>
+          <div class="checkout-actions"><span></span><button class="btn-primary" id="ckNext1Saved">${tr("nextBtn")}</button></div>
         </div>
-        <div class="form-error" id="ckError1"></div>
-        <div class="checkout-actions"><span></span><button class="btn-primary" id="ckNext1">${tr("nextBtn")}</button></div>
-      </div>
-    `;
+      `;
+    } else {
+      panel = `
+        <div class="checkout-panel">
+          <h2>${tr("checkoutTitleStep1")}</h2>
+          ${currentUser && savedAddresses.length > 0 ? `<button class="btn-secondary" id="ckBackToAddrList" style="margin-bottom:16px;">← ${tr("backToAddressList")}</button>` : ""}
+          <div class="field"><label>${tr("fullNameLbl")}</label><input type="text" id="ckFullName" value="${checkoutData.fullName}"></div>
+          <div class="field"><label>${tr("addressLbl")}</label><input type="text" id="ckAddress" value="${checkoutData.address}"></div>
+          <div class="field-row">
+            <div class="field"><label>${tr("cityLbl")}</label><input type="text" id="ckCity" value="${checkoutData.city}"></div>
+            <div class="field"><label>${tr("phoneLbl")}</label><input type="text" id="ckPhone" value="${checkoutData.phone}"></div>
+          </div>
+          ${currentUser ? `
+            <div class="field" style="display:flex;align-items:center;gap:8px;">
+              <input type="checkbox" id="ckSaveAddrChk" style="width:16px;height:16px;" ${saveNewAddress?'checked':''}>
+              <label style="margin:0;" for="ckSaveAddrChk">${tr("saveAddressCheckbox")}</label>
+            </div>
+            <div class="field" id="ckAddrLabelField" style="display:${saveNewAddress?'block':'none'};">
+              <label>${tr("addressLabelLbl")}</label><input type="text" id="ckAddrLabel" placeholder="Ev">
+            </div>
+          ` : ""}
+          <div class="form-error" id="ckError1"></div>
+          <div class="checkout-actions"><span></span><button class="btn-primary" id="ckNext1">${tr("nextBtn")}</button></div>
+        </div>
+      `;
+    }
   } else if(checkoutStep === 2){
     panel = `
       <div class="checkout-panel">
@@ -1865,17 +1974,48 @@ function renderCheckoutPage(main){
   bindCouponControls();
 
   if(checkoutStep === 1){
-    document.getElementById("ckNext1").onclick = () => {
-      checkoutData.fullName = document.getElementById("ckFullName").value.trim();
-      checkoutData.address = document.getElementById("ckAddress").value.trim();
-      checkoutData.city = document.getElementById("ckCity").value.trim();
-      checkoutData.phone = document.getElementById("ckPhone").value.trim();
-      const err = document.getElementById("ckError1");
-      if(!checkoutData.fullName || !checkoutData.address || !checkoutData.city || !checkoutData.phone){
-        err.textContent = tr("errFillAll"); err.classList.add("show"); return;
-      }
-      checkoutStep = 2; renderMain();
-    };
+    const savedAddresses = currentUser ? getUserAddresses() : [];
+    if(currentUser && savedAddresses.length > 0 && addressFormMode === "select"){
+      main.querySelectorAll("[data-selectaddr]").forEach(el=>{
+        el.onclick = () => { selectedAddressIdx = Number(el.dataset.selectaddr); renderMain(); };
+      });
+      document.getElementById("ckAddNewAddrBtn").onclick = () => { addressFormMode = "new"; renderMain(); };
+      document.getElementById("ckNext1Saved").onclick = () => {
+        const err = document.getElementById("ckError1");
+        if(selectedAddressIdx === null){ err.textContent = tr("errFillAll"); err.classList.add("show"); return; }
+        const a = savedAddresses[selectedAddressIdx];
+        checkoutData.fullName = a.fullName; checkoutData.address = a.address; checkoutData.city = a.city; checkoutData.phone = a.phone;
+        checkoutStep = 2; renderMain();
+      };
+    } else {
+      const backBtn = document.getElementById("ckBackToAddrList");
+      if(backBtn) backBtn.onclick = () => { addressFormMode = "select"; renderMain(); };
+      const saveChk = document.getElementById("ckSaveAddrChk");
+      if(saveChk) saveChk.onchange = (e) => { saveNewAddress = e.target.checked; renderMain(); };
+      document.getElementById("ckNext1").onclick = () => {
+        checkoutData.fullName = document.getElementById("ckFullName").value.trim();
+        checkoutData.address = document.getElementById("ckAddress").value.trim();
+        checkoutData.city = document.getElementById("ckCity").value.trim();
+        checkoutData.phone = document.getElementById("ckPhone").value.trim();
+        const err = document.getElementById("ckError1");
+        if(!checkoutData.fullName || !checkoutData.address || !checkoutData.city || !checkoutData.phone){
+          err.textContent = tr("errFillAll"); err.classList.add("show"); return;
+        }
+        if(currentUser && saveNewAddress){
+          const labelInput = document.getElementById("ckAddrLabel");
+          const label = labelInput ? labelInput.value.trim() : "";
+          if(label){
+            const userRecord = users.find(u=>u.id===currentUser.id);
+            if(userRecord){
+              if(!userRecord.addresses) userRecord.addresses = [];
+              userRecord.addresses.push({ label, fullName:checkoutData.fullName, address:checkoutData.address, city:checkoutData.city, phone:checkoutData.phone });
+            }
+          }
+        }
+        saveNewAddress = false; addressFormMode = "select";
+        checkoutStep = 2; renderMain();
+      };
+    }
   } else if(checkoutStep === 2){
     main.querySelectorAll("[data-ship]").forEach(el=>{ el.onclick = () => { checkoutData.shipping = el.dataset.ship; renderMain(); }; });
     document.getElementById("ckBack2").onclick = () => { checkoutStep = 1; renderMain(); };
@@ -1922,6 +2062,9 @@ function placeOrder(){
   cart = {};
   appliedCoupon = null;
   couponError = "";
+  cartReminderShown = false;
+  cartReminderDismissed = false;
+  if(cartReminderTimer) clearTimeout(cartReminderTimer);
   checkoutStep = 4;
   renderAll();
 }
@@ -2449,7 +2592,9 @@ function cartTotalTRY(){
 function addToCart(id){
   const p = PRODUCTS.find(pr=>pr.id===id);
   if(p && p.stock <= 0) return;
+  const wasEmpty = cartCount() === 0;
   cart[id] = (cart[id]||0)+1;
+  if(wasEmpty){ cartReminderDismissed = false; cartReminderShown = false; scheduleCartReminder(); }
   showToast(tr("toastAddedToCart"),"shopping-cart"); renderAll();
 }
 function changeQty(id, delta){
@@ -2516,6 +2661,91 @@ function renderAll(){
   renderDrawer();
   renderAccountArea();
   renderAccountMenu();
+  renderCompareBar();
+  renderCartReminder();
+  if(window.lucide) lucide.createIcons();
+}
+
+/* ================= compare bar & page ================= */
+function renderCompareBar(){
+  const bar = document.getElementById("compareBar");
+  if(compareList.length === 0 || currentView === "compare"){ bar.style.display = "none"; return; }
+  bar.style.display = "flex";
+  const items = compareList.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);
+  bar.innerHTML = `
+    <div class="thumbs">${items.map(p=>`<div><i data-lucide="${p.icon}" style="width:16px;height:16px;color:#fff"></i></div>`).join("")}</div>
+    <span>${compareList.length} ${tr("compareBarTitle")}</span>
+    <button class="clear" id="compareClearBtn">${tr("clearCompare")}</button>
+    <button class="go" id="compareGoBtn">${tr("compareNow")}</button>
+  `;
+  document.getElementById("compareClearBtn").onclick = () => { compareList = []; renderAll(); };
+  document.getElementById("compareGoBtn").onclick = () => { currentView = "compare"; renderAll(); window.scrollTo({top:0,behavior:"smooth"}); };
+  if(window.lucide) lucide.createIcons();
+}
+function renderComparePage(main){
+  const items = compareList.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);
+  if(items.length === 0){
+    main.innerHTML = `<div class="section-head"><h2>${tr("compareTitle")}</h2></div><div class="empty-state">${tr("compareEmpty")}</div>`;
+    return;
+  }
+  const rows = [
+    { label: tr("compareAttrPrice"), get:(p)=>formatPrice(p.priceTRY) },
+    { label: tr("compareAttrRating"), get:(p)=>`★ ${p.rating} (${p.reviews})` },
+    { label: tr("compareAttrCategory"), get:(p)=>`${catIcon(p.cat)} ${catName(p.cat)}` },
+    { label: tr("compareAttrStock"), get:(p)=> p.stock<=0 ? tr("outOfStock") : p.stock },
+    { label: tr("compareAttrBadge"), get:(p)=> p.badge ? tr(p.badge) : "—" },
+  ];
+  main.innerHTML = `
+    <div class="section-head"><h2>${tr("compareTitle")}</h2></div>
+    <div style="overflow-x:auto;">
+    <table class="compare-table">
+      <tr><th></th>${items.map(p=>`
+        <td>
+          <div class="compare-col-head">
+            ${thumbHtml(p, 34)}
+            <div class="pname">${p.name[lang]}</div>
+            <button class="compare-remove" data-comparerm="${p.id}">${tr("removeFromCompare")}</button>
+          </div>
+        </td>
+      `).join("")}</tr>
+      ${rows.map(r=>`<tr><th>${r.label}</th>${items.map(p=>`<td>${r.get(p)}</td>`).join("")}</tr>`).join("")}
+    </table>
+    </div>
+  `;
+  main.querySelectorAll("[data-comparerm]").forEach(btn=>{
+    btn.onclick = () => { compareList = compareList.filter(id=>id!==Number(btn.dataset.comparerm)); renderAll(); };
+  });
+}
+
+/* ================= abandoned cart reminder ================= */
+function scheduleCartReminder(){
+  if(cartReminderTimer) clearTimeout(cartReminderTimer);
+  cartReminderTimer = setTimeout(()=>{
+    if(cartCount() > 0 && currentView !== "checkout" && !cartReminderDismissed){
+      cartReminderShown = true;
+      renderCartReminder();
+    }
+  }, 20000);
+}
+function renderCartReminder(){
+  const el = document.getElementById("cartReminder");
+  if(!cartReminderShown || cartCount() === 0 || currentView === "checkout" || cartReminderDismissed){
+    el.style.display = "none";
+    return;
+  }
+  el.style.display = "flex";
+  el.innerHTML = `
+    <i data-lucide="shopping-cart" style="width:20px;height:20px;color:var(--amber);flex-shrink:0;"></i>
+    <span>${tr("cartReminderMsg")}</span>
+    <button class="go" id="cartReminderGoBtn">${tr("cartReminderGoBtn")}</button>
+    <button class="dismiss" id="cartReminderDismissBtn"><i data-lucide="x" style="width:16px;height:16px"></i></button>
+  `;
+  document.getElementById("cartReminderGoBtn").onclick = () => {
+    cartReminderDismissed = true; renderCartReminder();
+    document.getElementById("overlay").classList.add("open");
+    document.getElementById("drawer").classList.add("open");
+  };
+  document.getElementById("cartReminderDismissBtn").onclick = () => { cartReminderDismissed = true; renderCartReminder(); };
   if(window.lucide) lucide.createIcons();
 }
 
@@ -2555,7 +2785,7 @@ document.getElementById("checkoutBtn").onclick = () => {
   if(cartCount() === 0) return;
   closeCartDrawer();
   if(!currentUser){ pendingCheckoutAfterLogin = true; openAuthModal("login"); return; }
-  currentView = "checkout"; checkoutStep = 1;
+  currentView = "checkout"; checkoutStep = 1; addressFormMode = "select"; selectedAddressIdx = null;
   renderAll();
   window.scrollTo({top:0,behavior:"smooth"});
 };
