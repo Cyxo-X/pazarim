@@ -273,6 +273,16 @@
   .status-pill.delivered{background:#E7F3EE;color:var(--green);}
   .status-pill.cancelled{background:#FBEAEA;color:var(--red);}
 
+  .tracker{display:flex;align-items:flex-start;margin:14px 0 16px;padding:0 4px;}
+  .tracker-step{display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;flex:1;font-size:11px;color:var(--muted);text-align:center;}
+  .tracker-step .tdot{width:26px;height:26px;border-radius:50%;background:var(--border);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .tracker-step.done .tdot{background:var(--green);}
+  .tracker-step.current .tdot{background:var(--amber-dark);}
+  .tracker-step.done span, .tracker-step.current span{color:var(--text);font-weight:600;}
+  .tracker-step .tline{position:absolute;top:13px;left:50%;width:100%;height:2px;background:var(--border);z-index:-1;}
+  .tracker-step .tline.done{background:var(--green);}
+  .tracker.cancelled .tracker-step .tdot{background:var(--red);}
+
   /* trust */
   .trust{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:20px 0;}
   .trust .wrap{display:flex;justify-content:center;gap:44px;flex-wrap:wrap;font-size:13px;color:#3A4B5C;font-weight:500;}
@@ -749,7 +759,7 @@ const LANGS = {
     statusOpen:"Açık", statusResolved:"Çözüldü",
     outOfStock:"Stokta yok", stockLow:"Son ürünler",
     couponLbl:"İndirim kodu", couponPlaceholder:"Kupon kodu", applyCoupon:"Uygula", couponInvalid:"Geçersiz kupon kodu.",
-    toastCouponApplied:"Kupon uygulandı",
+    toastCouponApplied:"Kupon uygulandı", toastQuestionAdded:"Sorunuz iletildi",
     ownerPanel:"Sahip Paneli", ownerLoginTitle:"Sahip Girişi", ownerNameLbl:"Kim giriş yapıyor?",
     ownerLoginBtn:"Giriş yap", ownerInvalidCred:"E-posta veya şifre hatalı.", ownerDemoHint:"Demo: sahip1@pazarim.com veya sahip2@pazarim.com / sahip123",
     ownerLogout:"Çıkış yap", ownerWelcome:"Hoş geldin",
@@ -770,6 +780,13 @@ const LANGS = {
     savedAddresses:"Kayıtlı Adreslerim", addNewAddress:"+ Yeni adres ekle", useThisAddress:"Bu adresi kullan",
     addressLabelLbl:"Adres başlığı (ör. Ev, İş)", saveAddressCheckbox:"Bu adresi kaydet",
     backToAddressList:"Kayıtlı adreslerime dön", noSavedAddresses:"Henüz kayıtlı adresiniz yok.",
+    recentlyViewed:"Son görüntülenenler",
+    qaTitle:"Soru & Cevap", askQuestion:"Soru sor", yourQuestion:"Sorunuz", submitQuestion:"Gönder",
+    loginToAsk:"Soru sormak için giriş yapmalısınız.", notAnsweredYet:"Henüz yanıtlanmadı.", noQuestionsYet:"Henüz soru sorulmamış.",
+    orderTrackingTitle:"Sipariş Durumu", trackPreparing:"Hazırlanıyor", trackShipped:"Kargoda", trackDelivered:"Teslim edildi", trackCancelled:"İptal edildi",
+    loyaltyPoints:"Sadakat Puanı", pointsEarned:"puan kazandınız", myPoints:"Puanlarım", pointsLbl:"puan",
+    usePointsCheckbox:"Puanlarımı kullan", pointsAvailable:"puan mevcut", pointsNotEnough:"Yeterli puanınız yok (en az 100 puan gerekir).",
+    pointsDiscountNote:"100 puan = 10₺ indirim",
   },
   en: { code:"EN", flag:"🇬🇧", name:"English", currency:"$", rate:0.029,
     deliveryLabel:"Delivering to", deliveryValue:"Kadikoy, Istanbul",
@@ -847,7 +864,7 @@ const LANGS = {
     statusOpen:"Open", statusResolved:"Resolved",
     outOfStock:"Out of stock", stockLow:"Low stock",
     couponLbl:"Discount code", couponPlaceholder:"Coupon code", applyCoupon:"Apply", couponInvalid:"Invalid coupon code.",
-    toastCouponApplied:"Coupon applied",
+    toastCouponApplied:"Coupon applied", toastQuestionAdded:"Your question has been submitted",
     ownerPanel:"Owner Panel", ownerLoginTitle:"Owner Login", ownerNameLbl:"Who's logging in?",
     ownerLoginBtn:"Log in", ownerInvalidCred:"Incorrect email or password.", ownerDemoHint:"Demo: sahip1@pazarim.com or sahip2@pazarim.com / sahip123",
     ownerLogout:"Log out", ownerWelcome:"Welcome",
@@ -868,6 +885,13 @@ const LANGS = {
     savedAddresses:"Saved Addresses", addNewAddress:"+ Add new address", useThisAddress:"Use this address",
     addressLabelLbl:"Address label (e.g. Home, Work)", saveAddressCheckbox:"Save this address",
     backToAddressList:"Back to saved addresses", noSavedAddresses:"You have no saved addresses yet.",
+    recentlyViewed:"Recently viewed",
+    qaTitle:"Questions & Answers", askQuestion:"Ask a question", yourQuestion:"Your question", submitQuestion:"Submit",
+    loginToAsk:"You must log in to ask a question.", notAnsweredYet:"Not answered yet.", noQuestionsYet:"No questions yet.",
+    orderTrackingTitle:"Order Status", trackPreparing:"Preparing", trackShipped:"Shipped", trackDelivered:"Delivered", trackCancelled:"Cancelled",
+    loyaltyPoints:"Loyalty Points", pointsEarned:"points earned", myPoints:"My Points", pointsLbl:"pts",
+    usePointsCheckbox:"Use my points", pointsAvailable:"points available", pointsNotEnough:"Not enough points (100 minimum required).",
+    pointsDiscountNote:"100 pts = $0.30 off",
   },
   fr: { code:"FR", flag:"🇫🇷", name:"Français", currency:"€", rate:0.027,
     deliveryLabel:"Livraison à", deliveryValue:"Kadikoy, Istanbul",
@@ -945,7 +969,7 @@ const LANGS = {
     statusOpen:"Ouverte", statusResolved:"Résolue",
     outOfStock:"Rupture de stock", stockLow:"Stock limité",
     couponLbl:"Code promo", couponPlaceholder:"Code promo", applyCoupon:"Appliquer", couponInvalid:"Code promo invalide.",
-    toastCouponApplied:"Code promo appliqué",
+    toastCouponApplied:"Code promo appliqué", toastQuestionAdded:"Votre question a été envoyée",
     ownerPanel:"Panneau Propriétaire", ownerLoginTitle:"Connexion Propriétaire", ownerNameLbl:"Qui se connecte ?",
     ownerLoginBtn:"Se connecter", ownerInvalidCred:"E-mail ou mot de passe incorrect.", ownerDemoHint:"Démo : sahip1@pazarim.com ou sahip2@pazarim.com / sahip123",
     ownerLogout:"Se déconnecter", ownerWelcome:"Bienvenue",
@@ -966,6 +990,13 @@ const LANGS = {
     savedAddresses:"Adresses enregistrées", addNewAddress:"+ Ajouter une nouvelle adresse", useThisAddress:"Utiliser cette adresse",
     addressLabelLbl:"Nom de l'adresse (ex. Domicile, Travail)", saveAddressCheckbox:"Enregistrer cette adresse",
     backToAddressList:"Retour à mes adresses enregistrées", noSavedAddresses:"Vous n'avez pas encore d'adresse enregistrée.",
+    recentlyViewed:"Récemment consultés",
+    qaTitle:"Questions & Réponses", askQuestion:"Poser une question", yourQuestion:"Votre question", submitQuestion:"Envoyer",
+    loginToAsk:"Vous devez vous connecter pour poser une question.", notAnsweredYet:"Pas encore de réponse.", noQuestionsYet:"Aucune question pour le moment.",
+    orderTrackingTitle:"Statut de la commande", trackPreparing:"En préparation", trackShipped:"Expédiée", trackDelivered:"Livrée", trackCancelled:"Annulée",
+    loyaltyPoints:"Points de fidélité", pointsEarned:"points gagnés", myPoints:"Mes points", pointsLbl:"pts",
+    usePointsCheckbox:"Utiliser mes points", pointsAvailable:"points disponibles", pointsNotEnough:"Points insuffisants (100 minimum requis).",
+    pointsDiscountNote:"100 pts = 0,27 € de réduction",
   }
 };
 
@@ -1093,6 +1124,7 @@ let supportTickets = [];
 let coupons = [ { code:"HOSGELDIN10", percent:10, active:true }, { code:"PAZAR20", percent:20, active:true } ];
 let appliedCoupon = null;
 let couponError = "";
+let usePointsRedeem = false;
 let compareList = [];
 let cartReminderShown = false;
 let cartReminderDismissed = false;
@@ -1100,6 +1132,9 @@ let cartReminderTimer = null;
 let addressFormMode = "select"; // "select" | "new"
 let selectedAddressIdx = null;
 let saveNewAddress = false;
+let recentlyViewed = [];
+let productQuestions = {};
+let questionDraft = "";
 
 let isOwnerLoggedIn = false;
 let currentOwner = null;
@@ -1140,6 +1175,28 @@ function getSeedReviews(p){
     {name: templates[idxA].name, rating: ratingBase, comment: templates[idxA].comment},
     {name: templates[idxB].name, rating: Math.max(3,ratingBase-1), comment: templates[idxB].comment},
   ];
+}
+const QA_TEMPLATES = {
+  tr: [
+    { name:"Burak S.", question:"Bu ürün orijinal ambalajında mı geliyor?", answer:"Evet, tüm ürünler orijinal ambalajında ve mühürlü olarak gönderilir." },
+    { name:"Ayşe D.", question:"Kargo süresi ortalama ne kadar?", answer:"Standart kargoda 3-5 iş günü, hızlı kargoda 1-2 iş günü içinde teslim ediliyor." },
+    { name:"Kerem T.", question:"Ürünü iade edebilir miyim?", answer:"Evet, 30 gün içinde koşulsuz iade hakkınız bulunuyor." },
+  ],
+  en: [
+    { name:"Ben S.", question:"Does this come in its original packaging?", answer:"Yes, all products ship sealed in their original packaging." },
+    { name:"Ava D.", question:"How long does shipping usually take?", answer:"Standard shipping takes 3-5 business days, express takes 1-2 business days." },
+    { name:"Leo T.", question:"Can I return this product?", answer:"Yes, you have a no-questions-asked 30-day return policy." },
+  ],
+  fr: [
+    { name:"Baptiste S.", question:"Est-ce livré dans son emballage d'origine ?", answer:"Oui, tous les produits sont expédiés scellés dans leur emballage d'origine." },
+    { name:"Alice D.", question:"Quel est le délai de livraison habituel ?", answer:"3 à 5 jours ouvrés en livraison standard, 1 à 2 jours en livraison express." },
+    { name:"Léo T.", question:"Puis-je retourner ce produit ?", answer:"Oui, vous disposez de 30 jours pour un retour sans justification." },
+  ]
+};
+function getSeedQA(p){
+  const templates = QA_TEMPLATES[lang];
+  const idx = p.id % templates.length;
+  return [ templates[idx] ];
 }
 function formatDate(d){
   return new Date(d).toLocaleDateString(lang==='tr'?'tr-TR':lang==='fr'?'fr-FR':'en-US', {year:'numeric', month:'short', day:'numeric'});
@@ -1258,7 +1315,13 @@ function renderAccountMenu(){
   const menu = document.getElementById("accountMenu");
   if(!currentUser || !accountMenuOpen){ menu.classList.remove("open"); menu.innerHTML=""; return; }
   menu.innerHTML = `
-    <div class="account-menu-head"><div class="name">${currentUser.name}</div><div class="email">${currentUser.email}</div></div>
+    <div class="account-menu-head">
+      <div class="name">${currentUser.name}</div>
+      <div class="email">${currentUser.email}</div>
+      <div style="margin-top:8px;display:inline-flex;align-items:center;gap:5px;background:#FFF3E0;color:var(--amber-dark);font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:20px;">
+        <i data-lucide="sparkles" style="width:12px;height:12px"></i> ${getUserPoints()} ${tr("pointsLbl")}
+      </div>
+    </div>
     <div class="account-menu-item" id="menuMyOrders"><i data-lucide="package" style="width:16px;height:16px"></i> ${tr("myOrdersMenu")}</div>
     <div class="account-menu-item" id="menuAccountSettings"><i data-lucide="settings" style="width:16px;height:16px"></i> ${tr("accountSettingsMenu")}</div>
     <div class="account-menu-item danger" id="menuLogout"><i data-lucide="log-out" style="width:16px;height:16px"></i> ${tr("logout")}</div>
@@ -1312,7 +1375,7 @@ document.getElementById("authForm").addEventListener("submit",(e)=>{
   if(authTab === "register"){
     if(!name || !email || !password){ errEl.textContent = tr("errFillAll"); errEl.classList.add("show"); return; }
     if(users.some(u=>u.email===email)){ errEl.textContent = tr("errEmailTaken"); errEl.classList.add("show"); return; }
-    const newUser = { id: Date.now(), name, email, password, createdAt: new Date().toISOString(), addresses: [] };
+    const newUser = { id: Date.now(), name, email, password, createdAt: new Date().toISOString(), addresses: [], points: 0 };
     users.push(newUser);
     currentUser = { id:newUser.id, name:newUser.name, email:newUser.email };
     closeAuthModalFn();
@@ -1591,7 +1654,12 @@ function toggleCompare(id){
   }
   renderAll();
 }
-function openProduct(id){ selectedProductId = id; currentView = "product"; renderAll(); window.scrollTo({top:0,behavior:"smooth"}); }
+function openProduct(id){
+  selectedProductId = id;
+  currentView = "product";
+  recentlyViewed = [id, ...recentlyViewed.filter(x=>x!==id)].slice(0,8);
+  renderAll(); window.scrollTo({top:0,behavior:"smooth"});
+}
 
 /* ================= filter/sort ================= */
 function applyFilterSort(list){
@@ -1696,6 +1764,17 @@ function renderHomePage(main){
       <div class="value"><div class="value-icon"><i data-lucide="rotate-ccw" style="width:20px;height:20px;color:var(--navy)"></i></div><div><div class="title">${tr("valueReturnTitle")}</div><div class="sub">${tr("valueReturnSub")}</div></div></div>
     </div>
   `;
+  if(recentlyViewed.length > 0){
+    const rvItems = recentlyViewed.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);
+    html += `
+      <div class="cat-section">
+        <div class="cat-section-head">
+          <div class="heading"><div class="emoji-badge"><i data-lucide="history" style="width:18px;height:18px;color:var(--navy)"></i></div><h2>${tr("recentlyViewed")}</h2></div>
+        </div>
+        <div class="hscroll">${rvItems.map(productCard).join("")}</div>
+      </div>
+    `;
+  }
   CATEGORIES.forEach(c=>{
     const items = PRODUCTS.filter(p => p.cat === c.id).slice(0, 4);
     html += `
@@ -1769,6 +1848,20 @@ function renderProductPage(main){
       </div>
     </div>
 
+    <div class="reviews-section">
+      <h2>${tr("qaTitle")}</h2>
+      ${qaListHtml(p)}
+      <div class="review-form">
+        ${currentUser ? `
+          <div style="font-weight:700;font-size:14.5px;margin-bottom:12px;">${tr("askQuestion")}</div>
+          <textarea id="questionInput" placeholder="${tr('yourQuestion')}"></textarea>
+          <button class="submit-btn" id="submitQuestionBtn">${tr("submitQuestion")}</button>
+        ` : `
+          <div class="login-prompt"><span>${tr("loginToAsk")}</span><button id="qaLoginBtn">${tr("loginBtnShort")}</button></div>
+        `}
+      </div>
+    </div>
+
     ${related.length > 0 ? `
       <div class="cat-section">
         <div class="cat-section-head"><div class="heading"><div class="emoji-badge">${catIcon(p.cat)}</div><h2>${tr("relatedProducts")}</h2></div></div>
@@ -1802,8 +1895,36 @@ function renderProductPage(main){
     if(loginBtn) loginBtn.onclick = () => openAuthModal("login");
   }
 
+  if(currentUser){
+    const submitQBtn = document.getElementById("submitQuestionBtn");
+    if(submitQBtn) submitQBtn.onclick = () => {
+      const q = document.getElementById("questionInput").value.trim();
+      if(!q) return;
+      if(!productQuestions[p.id]) productQuestions[p.id] = [];
+      productQuestions[p.id].push({ name: currentUser.name, question: q, answer: null });
+      showToast(tr("toastQuestionAdded"), "message-circle-question");
+      renderMain();
+    };
+  } else {
+    const qaLoginBtn = document.getElementById("qaLoginBtn");
+    if(qaLoginBtn) qaLoginBtn.onclick = () => openAuthModal("login");
+  }
+
   bindProductEvents(main);
   if(window.lucide) lucide.createIcons();
+}
+function qaListHtml(p){
+  const seeded = getSeedQA(p);
+  const userQ = productQuestions[p.id] || [];
+  const all = [...seeded, ...userQ];
+  if(all.length === 0) return `<div class="empty-state" style="padding:30px 0;">${tr("noQuestionsYet")}</div>`;
+  return all.map(q => `
+    <div class="review-item">
+      <div class="rhead"><span class="rname"><i data-lucide="help-circle" style="width:13px;height:13px;vertical-align:-2px;"></i> ${q.name}</span></div>
+      <div class="rcomment" style="font-weight:600;margin-bottom:6px;">${q.question}</div>
+      <div class="rcomment" style="color:var(--muted);">${q.answer ? `<i data-lucide="corner-down-right" style="width:12px;height:12px;vertical-align:-1px;"></i> ${q.answer}` : tr("notAnsweredYet")}</div>
+    </div>
+  `).join("");
 }
 
 /* ================= favorites page ================= */
@@ -1825,11 +1946,18 @@ function stepDot(n, label){
   const cls = checkoutStep === n ? "active" : checkoutStep > n ? "done" : "";
   return `<div class="step-dot ${cls}"><div class="num">${checkoutStep > n ? "✓" : n}</div><span>${label}</span></div>`;
 }
+function getUserPoints(){
+  if(!currentUser) return 0;
+  const u = users.find(x=>x.id===currentUser.id);
+  return (u && u.points) || 0;
+}
 function checkoutSummaryHtml(){
   const entries = Object.entries(cart).filter(([,q])=>q>0);
   const shippingFeeTRY = checkoutData.shipping === "express" ? 39.9 : 0;
   const discountTRY = appliedCoupon ? cartTotalTRY() * (appliedCoupon.percent/100) : 0;
-  const total = cartTotalTRY() + shippingFeeTRY - discountTRY;
+  const userPoints = getUserPoints();
+  const pointsDiscountTRY = (usePointsRedeem && userPoints >= 100) ? 10 : 0;
+  const total = Math.max(0, cartTotalTRY() + shippingFeeTRY - discountTRY - pointsDiscountTRY);
   return `
     <div class="checkout-summary">
       <h3>${tr("orderSummary")}</h3>
@@ -1840,6 +1968,7 @@ function checkoutSummaryHtml(){
       <div class="summary-row"><span>${tr("subtotal")}</span><span>${formatPrice(cartTotalTRY())}</span></div>
       <div class="summary-row"><span>${tr("shipping")}</span><span>${shippingFeeTRY === 0 ? tr("shippingFree") : formatPrice(shippingFeeTRY)}</span></div>
       ${appliedCoupon ? `<div class="summary-row" style="color:var(--green);"><span>${tr("couponLbl")} (${appliedCoupon.code})</span><span>-${formatPrice(discountTRY)}</span></div>` : ""}
+      ${pointsDiscountTRY > 0 ? `<div class="summary-row" style="color:var(--green);"><span>${tr("usePointsCheckbox")}</span><span>-${formatPrice(pointsDiscountTRY)}</span></div>` : ""}
       <div class="coupon-row">
         ${appliedCoupon
           ? `<div class="coupon-applied"><i data-lucide="tag" style="width:14px;height:14px"></i> ${appliedCoupon.code} (%${appliedCoupon.percent}) <button id="removeCouponBtn">${tr("removeItem")}</button></div>`
@@ -1847,6 +1976,13 @@ function checkoutSummaryHtml(){
         }
       </div>
       ${couponError ? `<div class="field-hint" style="color:var(--red);margin-top:6px;">${couponError}</div>` : ""}
+      ${currentUser ? `
+        <div class="field" style="display:flex;align-items:center;gap:8px;margin-top:10px;${userPoints < 100 ? 'opacity:0.5;' : ''}">
+          <input type="checkbox" id="usePointsChk" style="width:16px;height:16px;" ${usePointsRedeem?'checked':''} ${userPoints < 100 ? 'disabled':''}>
+          <label style="margin:0;font-size:12.5px;" for="usePointsChk">${tr("usePointsCheckbox")} (${userPoints} ${tr("pointsAvailable")})</label>
+        </div>
+        <div class="field-hint">${tr("pointsDiscountNote")}</div>
+      ` : ""}
       <div class="summary-total"><span>${tr("totalLbl")}</span><span>${formatPrice(total)}</span></div>
     </div>
   `;
@@ -1865,6 +2001,8 @@ function bindCouponControls(){
     };
   }
   if(removeBtn){ removeBtn.onclick = () => { appliedCoupon = null; renderMain(); }; }
+  const pointsChk = document.getElementById("usePointsChk");
+  if(pointsChk){ pointsChk.onchange = (e) => { usePointsRedeem = e.target.checked; renderMain(); }; }
 }
 function renderCheckoutPage(main){
   if(cartCount() === 0 && checkoutStep < 4){
@@ -1958,6 +2096,7 @@ function renderCheckoutPage(main){
         <p>${tr("orderConfirmedSub")}</p>
         <div class="summary-row" style="justify-content:center;gap:8px;"><span>${tr("orderNumberLbl")}:</span><strong>${o ? o.id : ""}</strong></div>
         <div class="summary-row" style="justify-content:center;gap:8px;"><span>${tr("totalLbl")}:</span><strong>${o ? formatPrice(o.totalTRY) : ""}</strong></div>
+        ${o && o.pointsEarned > 0 ? `<div class="summary-row" style="justify-content:center;gap:8px;color:var(--amber-dark);font-weight:700;"><i data-lucide="sparkles" style="width:14px;height:14px"></i> +${o.pointsEarned} ${tr("pointsEarned")}</div>` : ""}
         <div style="margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
           <button class="btn-secondary" id="ckViewOrders" style="flex:none;">${tr("myOrders")}</button>
           <button class="btn-primary" id="ckBackHome" style="flex:none;">${tr("continueShopping")}</button>
@@ -2047,12 +2186,25 @@ function placeOrder(){
   });
   const shippingFeeTRY = checkoutData.shipping === "express" ? 39.9 : 0;
   const discountTRY = appliedCoupon ? cartTotalTRY() * (appliedCoupon.percent/100) : 0;
+  const userPoints = getUserPoints();
+  const pointsUsed = (usePointsRedeem && userPoints >= 100) ? 100 : 0;
+  const pointsDiscountTRY = pointsUsed > 0 ? 10 : 0;
+  const finalTotal = Math.max(0, cartTotalTRY() + shippingFeeTRY - discountTRY - pointsDiscountTRY);
+  const pointsEarned = Math.floor(finalTotal / 10);
+
+  const userRecord = users.find(u=>u.id===currentUser.id);
+  if(userRecord){
+    if(typeof userRecord.points !== "number") userRecord.points = 0;
+    userRecord.points = Math.max(0, userRecord.points - pointsUsed) + pointsEarned;
+  }
+
   const order = {
     id: "PZ" + Date.now().toString().slice(-8),
     date: new Date().toISOString(),
     items,
-    totalTRY: cartTotalTRY() + shippingFeeTRY - discountTRY,
+    totalTRY: finalTotal,
     couponCode: appliedCoupon ? appliedCoupon.code : null,
+    pointsUsed, pointsEarned,
     status: "preparing",
     userEmail: currentUser.email,
     userName: currentUser.name,
@@ -2062,6 +2214,7 @@ function placeOrder(){
   cart = {};
   appliedCoupon = null;
   couponError = "";
+  usePointsRedeem = false;
   cartReminderShown = false;
   cartReminderDismissed = false;
   if(cartReminderTimer) clearTimeout(cartReminderTimer);
@@ -2070,6 +2223,27 @@ function placeOrder(){
 }
 
 /* ================= orders page (customer) ================= */
+function orderTrackerHtml(status){
+  if(status === "cancelled"){
+    return `<div class="tracker cancelled"><div class="tracker-step done"><div class="tdot"><i data-lucide="x" style="width:12px;height:12px"></i></div><span>${tr("trackCancelled")}</span></div></div>`;
+  }
+  const stages = [
+    {key:"preparing", icon:"package", label:tr("trackPreparing")},
+    {key:"shipped", icon:"truck", label:tr("trackShipped")},
+    {key:"delivered", icon:"check", label:tr("trackDelivered")},
+  ];
+  const order = ["preparing","shipped","delivered"];
+  const currentIdx = order.indexOf(status);
+  return `<div class="tracker">
+    ${stages.map((s,i)=>`
+      <div class="tracker-step ${i<=currentIdx?'done':''} ${i===currentIdx?'current':''}">
+        <div class="tdot"><i data-lucide="${s.icon}" style="width:12px;height:12px"></i></div>
+        <span>${s.label}</span>
+        ${i < stages.length-1 ? `<div class="tline ${i<currentIdx?'done':''}"></div>` : ""}
+      </div>
+    `).join("")}
+  </div>`;
+}
 function renderOrdersPage(main){
   if(!currentUser){
     main.innerHTML = `<div class="empty-state">${tr("loginRequiredCheckout")}<div style="margin-top:14px;"><button class="btn-primary" id="ordersLoginBtn" style="display:inline-block;width:auto;padding:11px 22px;">${tr("loginBtnShort")}</button></div></div>`;
@@ -2087,12 +2261,14 @@ function renderOrdersPage(main){
               <div><div class="oid">${o.id}</div><div class="odate">${tr("orderDateLbl")}: ${formatDate(o.date)}</div></div>
               <span class="status-pill ${o.status}">${tr("status"+o.status.charAt(0).toUpperCase()+o.status.slice(1))}</span>
             </div>
+            ${orderTrackerHtml(o.status)}
             ${o.items.map(it => `<div class="order-item-row"><span>${it.name} × ${it.qty}</span><span>${formatPrice(it.priceTRY*it.qty)}</span></div>`).join("")}
             <div class="order-total-row"><span>${tr("totalLbl")}</span><span>${formatPrice(o.totalTRY)}</span></div>
           </div>
         `).join("")
     }
   `;
+  if(window.lucide) lucide.createIcons();
 }
 
 /* ================= admin panel ================= */
